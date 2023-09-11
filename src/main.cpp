@@ -1,5 +1,5 @@
 // Include GLEW
-#include <glew.h>
+#include <GL/glew.h>
 
 // Include GLFW
 #include <GLFW/glfw3.h>
@@ -37,19 +37,19 @@ GLFWwindow* InitWindow()
 
     // Initialize GLEW
     glewExperimental = true; // Needed for core profile
-    //if (glewInit() != GLEW_OK) {
-    //    fprintf(stderr, "Failed to initialize GLEW\n");
-    //    getchar();
-    //    glfwTerminate();
-    //    return nullptr;
-    //}
+    if (glewInit() != GLEW_OK) {
+        fprintf(stderr, "Failed to initialize GLEW\n");
+        getchar();
+        glfwTerminate();
+        return nullptr;
+    }
 
-    //std::cout << "Using GL Version: " << glGetString(GL_VERSION) << std::endl;
+    std::cout << "Using GL Version: " << glGetString(GL_VERSION) << std::endl;
 
     //// Ensure we can capture the escape key being pressed below
-    //glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-    //return window;
+    return window;
 }
 
 int main(void)
