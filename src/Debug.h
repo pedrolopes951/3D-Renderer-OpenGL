@@ -1,7 +1,6 @@
 #pragma once
 
-#include <glew.h>
-
+#include <GL/glew.h>
 #include <iostream>
 #include <stdint.h>
 #include <assert.h>
