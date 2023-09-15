@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\VertexBuffer.h" />
     <ClCompile Include="src\FactoryModels.cpp" />
     <ClCompile Include="src\glm\detail\glm.cpp" />
     <ClCompile Include="src\imgui\imgui.cpp" />
@@ -155,12 +156,15 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Models.cpp" />
     <ClCompile Include="src\stb_image\stb_image.cpp" />
+    <ClCompile Include="src\VertexArray.cpp" />
+    <ClCompile Include="src\VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\FactoryModels.h" />
     <ClInclude Include="include\IFactoryModels.h" />
     <ClInclude Include="include\IModels.h" />
     <ClInclude Include="include\Models.h" />
+    <ClInclude Include="include\VertexArray.h" />
     <ClInclude Include="src\Debug.h" />
     <ClInclude Include="src\glm\common.hpp" />
     <ClInclude Include="src\glm\detail\compute_common.hpp" />
