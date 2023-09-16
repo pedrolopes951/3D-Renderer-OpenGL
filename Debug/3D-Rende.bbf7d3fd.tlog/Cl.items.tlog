@@ -1,3 +1,4 @@
+C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\src\Debug.cpp;C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\Debug\Debug.obj
 C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\src\FactoryModels.cpp;C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\Debug\FactoryModels.obj
 C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\src\glm\detail\glm.cpp;C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\Debug\glm.obj
 C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\src\imgui\imgui.cpp;C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\Debug\imgui.obj
@@ -10,3 +11,6 @@ C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\src\img
 C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\src\main.cpp;C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\Debug\main.obj
 C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\src\Models.cpp;C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\Debug\Models.obj
 C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\src\stb_image\stb_image.cpp;C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\Debug\stb_image.obj
+C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\src\VertexArray.cpp;C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\Debug\VertexArray.obj
+C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\src\VertexBuffer.cpp;C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\Debug\VertexBuffer.obj
+C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\src\VertexBufferLayout.cpp;C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\Debug\VertexBufferLayout.obj
