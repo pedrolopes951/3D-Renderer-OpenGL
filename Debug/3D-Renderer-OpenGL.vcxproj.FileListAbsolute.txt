@@ -1,1 +1,0 @@
-C:\Programming\GameEngineProgramming\ComputerGraphics\3D-Renderer-OpenGL\Debug\3D-Renderer-OpenGL.exe
