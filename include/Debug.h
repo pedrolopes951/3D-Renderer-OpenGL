@@ -6,6 +6,8 @@
 #include <assert.h>
 
 #define ASSERT(x) if (!(x)) assert(false)
+#define INT2VOIDP(i) (void*)(uintptr_t)(i)
+
 
 void  GLClearError();
 bool  GLCheckError();

@@ -3,7 +3,7 @@
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
 
-
+// Vertex Array Objects (VAOs)
 class VertexArray
 {
 public:
@@ -16,6 +16,6 @@ public:
     void Unbind() const;
 
 private:
-    unsigned int m_RendererId;
+    unsigned int m_RendererID;
 };
 
