@@ -66,10 +66,14 @@ int main(void)
         return -1;
 
     // Create samples of shapes to be rendered
-
     std::unique_ptr<IModelFactory> triangleFactory = std::make_unique<TriangleFactory>();
 
-    std::unique_ptr<IModel> triangleModel = triangleFactory->CreateModel();
+    Vertex triangle[] =
+    { Vertex(-0.5f, -0.5f, 0.0f),
+    Vertex(0.5f, -0.5f, 0.0f),
+    Vertex(0.0f, 0.5f, 0.0f) };
+
+    std::unique_ptr<IModel> triangleModel = triangleFactory->CreateModel(triangle, GLType::FLOAT, 3);
 
 
 

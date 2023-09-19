@@ -1,38 +1,48 @@
 #pragma once
 #include "IModels.h"
+#include "Vertex.h"
 // Base Model Class Method
 
 
 class Triangle : public IModel
 {
 public:
-    Triangle();
+    Triangle(const Vertex* vertex, const GLType typeVertices, const int countVertices);
     ~Triangle();
     void Render() override;
 private:
+    VertexArray m_va;
+    VertexBuffer m_vb;
+    VertexBufferLayout m_layout;
 
 };
 
 class Square : public IModel
 {
 public:
-    Square();
+    Square(const Vertex* vertex, const GLType typeVertices, const int countVertices);
     ~Square();
     void Render() override;
 
 
 private:
+    VertexArray m_va;
+    VertexBuffer m_vb;
+    VertexBufferLayout m_layout;
 
 };
 
 class Circle : public IModel
 {
 public:
-    Circle();
+    Circle(const Vertex* vertex, const GLType typeVertices, const int countVertices);
     ~Circle();
     void Render() override;
 
 private:
+    VertexArray m_va;
+    VertexBuffer m_vb;
+    VertexBufferLayout m_layout;
 
 };
 

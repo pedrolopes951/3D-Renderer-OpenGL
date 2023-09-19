@@ -10,7 +10,7 @@ public:
         std::cout << "Triangle Created" <<  std::endl;
     };
     ~TriangleFactory(){};
-    std::unique_ptr<IModel> CreateModel() override;
+    std::unique_ptr<IModel> CreateModel(const Vertex* vertex, const GLType typeVertices, const int countVertices) override;
 
 private:
 
@@ -20,7 +20,7 @@ class SquareFactory : public IModelFactory
 public:
     SquareFactory() {};
     ~SquareFactory() {};
-    std::unique_ptr<IModel> CreateModel() override;
+    std::unique_ptr<IModel> CreateModel(const Vertex* vertex, const GLType typeVertices, const int countVertices) override;
 
 private:
 
@@ -30,7 +30,7 @@ class CircleFactory : public IModelFactory
 public:
     CircleFactory() {};
     ~CircleFactory() {};
-    std::unique_ptr<IModel> CreateModel() override;
+    std::unique_ptr<IModel> CreateModel(const Vertex* vertex, const GLType typeVertices, const int countVertices) override;
 
 private:
 
