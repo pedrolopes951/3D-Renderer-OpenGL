@@ -14,6 +14,7 @@ private:
     VertexArray m_va;
     VertexBuffer m_vb;
     VertexBufferLayout m_layout;
+    int m_countvertices;
 
 };
 
@@ -29,6 +30,8 @@ private:
     VertexArray m_va;
     VertexBuffer m_vb;
     VertexBufferLayout m_layout;
+    int m_countvertices;
+
 
 };
 

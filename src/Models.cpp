@@ -1,7 +1,7 @@
 #include "Models.h"
 
 
-Triangle::Triangle(const Vertex* vertex, const GLType typeVertices, const int countVertices) : m_vb{vertex,sizeof(vertex)}, m_layout{}, m_va{}
+Triangle::Triangle(const Vertex* vertex, const GLType typeVertices, const int countVertices) : m_vb{vertex,countVertices * sizeof(vertex)}, m_layout{}, m_va{}, m_countvertices{countVertices}
 {
     switch (typeVertices)
     {
@@ -27,9 +27,13 @@ Triangle::~Triangle()
 
 void Triangle::Render()
 {
+    m_va.Bind();
+    GLCall(glDrawArrays(GL_TRIANGLES,0, m_countvertices));
+    GLCall(glDrawElements(GL_TRIANGLES, m_countvertices, GL_UNSIGNED_INT, nullptr));
+
 }
 
-Square::Square(const Vertex* vertex, const GLType typeVertices, const int countVertices) : m_vb{ vertex,sizeof(vertex) }, m_layout{}, m_va{}
+Square::Square(const Vertex* vertex, const GLType typeVertices, const int countVertices) : m_vb{ vertex,sizeof(vertex) }, m_layout{}, m_va{}, m_countvertices{ countVertices }
 {
     switch (typeVertices)
     {
