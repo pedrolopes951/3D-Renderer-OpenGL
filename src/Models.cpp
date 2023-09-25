@@ -1,7 +1,7 @@
 #include "Models.h"
 
 
-Triangle::Triangle(const Vertex* vertex, const GLType typeVertices, const int countVertices) : m_vb{vertex,countVertices * sizeof(vertex)}, m_layout{}, m_va{}, m_countvertices{countVertices}
+Triangle::Triangle(const Vertex& vertex, const unsigned int size, const GLType typeVertices, const int countVertices) : m_vb{vertex,size}, m_layout{}, m_va{}, m_countvertices{countVertices}
 {
     switch (typeVertices)
     {
@@ -19,6 +19,8 @@ Triangle::Triangle(const Vertex* vertex, const GLType typeVertices, const int co
         throw("Not Valid GLType");
         break;
     }
+    m_va.AddBuffer(m_vb, m_layout);
+  
 }
 
 Triangle::~Triangle()
@@ -28,12 +30,11 @@ Triangle::~Triangle()
 void Triangle::Render()
 {
     m_va.Bind();
-    GLCall(glDrawArrays(GL_TRIANGLES,0, m_countvertices));
     GLCall(glDrawElements(GL_TRIANGLES, m_countvertices, GL_UNSIGNED_INT, nullptr));
 
 }
 
-Square::Square(const Vertex* vertex, const GLType typeVertices, const int countVertices) : m_vb{ vertex,sizeof(vertex) }, m_layout{}, m_va{}, m_countvertices{ countVertices }
+Square::Square(const Vertex& vertex, const unsigned int size, const GLType typeVertices, const int countVertices) : m_vb{ vertex,sizeof(vertex) }, m_layout{}, m_va{}, m_countvertices{ countVertices }
 {
     switch (typeVertices)
     {
@@ -62,7 +63,7 @@ void Square::Render()
 {
 }
 
-Circle::Circle(const Vertex* vertex, const GLType typeVertices, const int countVertices) : m_vb{ vertex,sizeof(vertex) }, m_layout{}, m_va{}
+Circle::Circle(const Vertex& vertex, const unsigned int size, const GLType typeVertices, const int countVertices) : m_vb{ vertex,sizeof(vertex) }, m_layout{}, m_va{}
 {
     switch (typeVertices)
     {

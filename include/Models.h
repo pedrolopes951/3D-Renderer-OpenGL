@@ -7,7 +7,7 @@
 class Triangle : public IModel
 {
 public:
-    Triangle(const Vertex* vertex, const GLType typeVertices, const int countVertices);
+    Triangle(const Vertex& vertex, const unsigned int size, const GLType typeVertices, const int countVertices);
     ~Triangle();
     void Render() override;
 private:
@@ -21,7 +21,7 @@ private:
 class Square : public IModel
 {
 public:
-    Square(const Vertex* vertex, const GLType typeVertices, const int countVertices);
+    Square(const Vertex& vertex, const unsigned int size, const GLType typeVertices, const int countVertices);
     ~Square();
     void Render() override;
 
@@ -38,7 +38,7 @@ private:
 class Circle : public IModel
 {
 public:
-    Circle(const Vertex* vertex, const GLType typeVertices, const int countVertices);
+    Circle(const Vertex& vertex, const unsigned int size, const GLType typeVertices, const int countVertices);
     ~Circle();
     void Render() override;
 

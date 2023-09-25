@@ -33,41 +33,41 @@ void Shader(unsigned int& shaderProgram)
     // ------------------------------------
     // vertex shader
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
+    GLCall(glShaderSource(vertexShader, 1, &vertexShaderSource, NULL));
+    GLCall(glCompileShader(vertexShader));
     // check for shader compile errors
     int success;
     char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    GLCall(glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success));
     if (!success)
     {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        GLCall(glGetShaderInfoLog(vertexShader, 512, NULL, infoLog));
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
     // fragment shader
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
+    unsigned int fragmentShader = GLCall(glCreateShader(GL_FRAGMENT_SHADER));
+    GLCall(glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL));
+    GLCall( glCompileShader(fragmentShader));
     // check for shader compile errors
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+    GLCall(glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success));
     if (!success)
     {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+        GLCall(glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog));
         std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
     // link shaders
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
+    shaderProgram = GLCall(glCreateProgram());
+    GLCall(glAttachShader(shaderProgram, vertexShader));
+    GLCall( glAttachShader(shaderProgram, fragmentShader));
+    GLCall(glLinkProgram(shaderProgram));
     // check for linking errors
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    GLCall(glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success));
     if (!success) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        GLCall(glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog));
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    GLCall(glDeleteShader(vertexShader));
+    GLCall(glDeleteShader(fragmentShader));
 }
 
 GLFWwindow* InitWindow()
@@ -126,9 +126,9 @@ int main(void)
         return -1;
 
 
-    // Build Shader
-    unsigned int shaderProgram;
-    Shader(shaderProgram);
+    //// Build Shader
+    //unsigned int shaderProgram;
+    //Shader(shaderProgram);
 
     // Create samples of shapes to be rendered
     std::unique_ptr<IModelFactory> triangleFactory = std::make_unique<TriangleFactory>();
@@ -138,23 +138,23 @@ int main(void)
     Vertex(0.5f, -0.5f, 0.0f),
     Vertex(0.0f, 0.5f, 0.0f) };
 
-    std::unique_ptr<IModel> triangleModel = triangleFactory->CreateModel(triangle, GLType::FLOAT, 3);
-
-
-
+    std::unique_ptr<IModel> triangleModel = triangleFactory->CreateModel(triangle[0], sizeof(triangle), GLType::FLOAT, 3);
+    
     // Check if the ESC keys was pressed or the window was closed
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
     {
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
         // draw our first triangle
-        glUseProgram(shaderProgram);
+        //GLCall(glUseProgram(shaderProgram));
         triangleModel->Render();
-        glfwSwapBuffers(window); // wap the color buffer (a large 2D buffer that contains color values for each pixel in GLFW's window) that is used to render to during this render iteration and show it as output to the screen.
-        glfwPollEvents();
+        //glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        GLCall(glfwSwapBuffers(window)); // wap the color buffer (a large 2D buffer that contains color values for each pixel in GLFW's window) that is used to render to during this render iteration and show it as output to the screen.
+        GLCall(glfwPollEvents());
     }
 
     // Cleans up all the resources before it closes window
-    glfwTerminate();
+    GLCall(glfwTerminate());
 
 
     return 0;
