@@ -1,7 +1,7 @@
 #include "VertexBuffer.h"
 
 
-VertexBuffer::VertexBuffer(const Vertex& data, unsigned int size) : m_data{data}, m_size{size}
+VertexBuffer::VertexBuffer(const std::vector<Vertex>& data) : m_data{data}, m_size(data.size()*sizeof(Vertex))
 {
     GLCall(glGenBuffers(1, &m_RendererID)); // Generate a VBO identifier and store it in m_RendererID
 
@@ -15,7 +15,7 @@ VertexBuffer::~VertexBuffer()
 void VertexBuffer::Bind() const
 {
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID)); // This activated the buffer, this tell the current OpenGlContex that this buffer is ready operated on
-    GLCall(glBufferData(GL_ARRAY_BUFFER, m_size, &m_data, GL_STATIC_DRAW));
+    GLCall(glBufferData(GL_ARRAY_BUFFER, m_size, m_data.data(), GL_STATIC_DRAW));
 }
 
 void VertexBuffer::Unbind() const

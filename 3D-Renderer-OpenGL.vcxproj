@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Debug.cpp" />
+    <ClCompile Include="src\ElementBuffer.cpp" />
     <ClCompile Include="src\FactoryModels.cpp" />
     <ClCompile Include="src\glm\detail\glm.cpp" />
     <ClCompile Include="src\imgui\imgui.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="src\VertexBufferLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\ElementBuffer.h" />
     <ClInclude Include="src\glm\common.hpp" />
     <ClInclude Include="src\glm\detail\compute_common.hpp" />
     <ClInclude Include="src\glm\detail\compute_vector_relational.hpp" />

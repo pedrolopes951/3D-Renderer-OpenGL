@@ -126,6 +126,8 @@ int main(void)
         return -1;
 
 
+
+
     //// Build Shader
     //unsigned int shaderProgram;
     //Shader(shaderProgram);
@@ -133,12 +135,17 @@ int main(void)
     // Create samples of shapes to be rendered
     std::unique_ptr<IModelFactory> triangleFactory = std::make_unique<TriangleFactory>();
 
-    Vertex triangle[] =
-    { Vertex(-0.5f, -0.5f, 0.0f),
-    Vertex(0.5f, -0.5f, 0.0f),
-    Vertex(0.0f, 0.5f, 0.0f) };
+    std::vector<Vertex> triangle =
+    { Vertex(-0.5f, -0.5f, 0.0f), // Bottom left
+    Vertex(0.5f, -0.5f, 0.0f), // Bottom riht
+    Vertex(0.0f, 0.5f, 0.0f) }; // Top center 
 
-    std::unique_ptr<IModel> triangleModel = triangleFactory->CreateModel(triangle[0], sizeof(triangle), GLType::FLOAT, 3);
+    // indices
+    std::vector<unsigned int> indices =
+    { 0,1,2 }; // Draw Triangle
+
+
+    std::unique_ptr<IModel> triangleModel = triangleFactory->CreateModel(triangle, indices,GLType::FLOAT);
     
     // Check if the ESC keys was pressed or the window was closed
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)

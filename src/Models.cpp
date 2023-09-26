@@ -1,18 +1,18 @@
 #include "Models.h"
 
 
-Triangle::Triangle(const Vertex& vertex, const unsigned int size, const GLType typeVertices, const int countVertices) : m_vb{vertex,size}, m_layout{}, m_va{}, m_countvertices{countVertices}
+Triangle::Triangle(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices) : m_vb{vertex}, m_eb{eb}, m_layout{}, m_va{}, m_countvertices{vertex.size()}
 {
     switch (typeVertices)
     {
     case GLType::FLOAT:
-        m_layout.AddFloat(countVertices);
+        m_layout.AddFloat(m_countvertices);
         break;
     case GLType::UNSIGNED_INT:
-        m_layout.AddUnsignedInt(countVertices);
+        m_layout.AddUnsignedInt(m_countvertices);
         break;
     case GLType::UNSIGNED_BYTE:
-        m_layout.AddUnsignedByte(countVertices);
+        m_layout.AddUnsignedByte(m_countvertices);
         break;
     default:
         std::cout << "Not Valid GLType" << std::endl;
@@ -30,22 +30,23 @@ Triangle::~Triangle()
 void Triangle::Render()
 {
     m_va.Bind();
+    m_eb.Bind();
     GLCall(glDrawElements(GL_TRIANGLES, m_countvertices, GL_UNSIGNED_INT, nullptr));
 
 }
 
-Square::Square(const Vertex& vertex, const unsigned int size, const GLType typeVertices, const int countVertices) : m_vb{ vertex,sizeof(vertex) }, m_layout{}, m_va{}, m_countvertices{ countVertices }
+Square::Square(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices) : m_vb{ vertex }, m_eb{ eb },m_layout{}, m_va{}, m_countvertices{ vertex.size() }
 {
     switch (typeVertices)
     {
     case GLType::FLOAT:
-        m_layout.AddFloat(countVertices);
+        m_layout.AddFloat(m_countvertices);
         break;
     case GLType::UNSIGNED_INT:
-        m_layout.AddUnsignedInt(countVertices);
+        m_layout.AddUnsignedInt(m_countvertices);
         break;
     case GLType::UNSIGNED_BYTE:
-        m_layout.AddUnsignedByte(countVertices);
+        m_layout.AddUnsignedByte(m_countvertices);
         break;
     default:
         std::cout << "Not Valid GLType" << std::endl;
@@ -63,18 +64,18 @@ void Square::Render()
 {
 }
 
-Circle::Circle(const Vertex& vertex, const unsigned int size, const GLType typeVertices, const int countVertices) : m_vb{ vertex,sizeof(vertex) }, m_layout{}, m_va{}
+Circle::Circle(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices) : m_vb{ vertex },  m_eb{ eb }, m_layout{}, m_va{}, m_countvertices{ vertex.size() }
 {
     switch (typeVertices)
     {
     case GLType::FLOAT:
-        m_layout.AddFloat(countVertices);
+        m_layout.AddFloat(m_countvertices);
         break;
     case GLType::UNSIGNED_INT:
-        m_layout.AddUnsignedInt(countVertices);
+        m_layout.AddUnsignedInt(m_countvertices);
         break;
     case GLType::UNSIGNED_BYTE:
-        m_layout.AddUnsignedByte(countVertices);
+        m_layout.AddUnsignedByte(m_countvertices);
         break;
     default:
         std::cout << "Not Valid GLType" << std::endl;

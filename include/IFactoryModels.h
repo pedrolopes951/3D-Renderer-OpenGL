@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "Vertex.h"
-
+#include <vector>
 class IModel;
 
 class IModelFactory
@@ -9,7 +9,7 @@ class IModelFactory
 public:
     IModelFactory(){};
     virtual ~IModelFactory()= default;
-    virtual std::unique_ptr<IModel>CreateModel(const Vertex& vertex, const unsigned int size, const GLType typeVertices, const int countVertices) = 0;
+    virtual std::unique_ptr<IModel>CreateModel(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)  = 0;
 
 private:
 

@@ -63,6 +63,9 @@
     <ClCompile Include="src\Debug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ElementBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stb_image\stb_image.h">
@@ -939,6 +942,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\glm\vector_relational.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ElementBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
