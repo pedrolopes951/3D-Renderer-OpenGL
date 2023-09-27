@@ -139,8 +139,8 @@ int main(void)
     Vertex(0.0f, 0.1f, 0.0f) }; // Top center
 
     std::vector<Vertex> square =
-    { Vertex(1.0f, -1.0f, 0.0f), // Bottom left
-    Vertex(1.1f, -1.0f, 0.0f), // Bottom riht
+    { Vertex(0.5f, -0.5f, 0.0f), // Bottom left
+    Vertex(2.0f, -0.5f, 0.0f), // Bottom riht
     Vertex(2.0f, 0.5f, 0.0f),
     Vertex(0.5f, 0.5f, 0.0f) }; // Top center
 

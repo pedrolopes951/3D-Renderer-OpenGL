@@ -18,7 +18,9 @@ private:
 class SquareFactory : public IModelFactory
 {
 public:
-    SquareFactory() {};
+    SquareFactory() {
+        std::cout << "Square Created" << std::endl;
+    };
     ~SquareFactory() {};
     std::unique_ptr<IModel> CreateModel(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)  override;
 
@@ -28,7 +30,8 @@ private:
 class CircleFactory : public IModelFactory
 {
 public:
-    CircleFactory() {};
+    CircleFactory() {
+    };
     ~CircleFactory() {};
     std::unique_ptr<IModel> CreateModel(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)  override;
 
