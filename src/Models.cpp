@@ -31,7 +31,7 @@ void Triangle::Render()
 {
     m_va.Bind();
     m_eb.Bind();
-    GLCall(glDrawElements(GL_TRIANGLES, m_countvertices, GL_UNSIGNED_INT, nullptr));
+    GLCall(glDrawElements(GL_TRIANGLES, m_eb.GetCount(), GL_UNSIGNED_INT, nullptr));
 
 }
 
@@ -66,7 +66,7 @@ void Square::Render()
 {
     m_va.Bind();
     m_eb.Bind();
-    GLCall(glDrawElements(GL_TRIANGLES, m_countvertices, GL_UNSIGNED_INT, nullptr));
+    GLCall(glDrawElements(GL_TRIANGLES, m_eb.GetCount(), GL_UNSIGNED_INT, nullptr));
 }
 
 Circle::Circle(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices) : m_vb{ vertex },  m_eb{ eb }, m_layout{}, m_va{}, m_countvertices{ vertex.size() }

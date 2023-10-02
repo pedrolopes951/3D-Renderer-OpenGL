@@ -134,24 +134,26 @@ int main(void)
     std::unique_ptr<IModelFactory> squareFactory = std::make_unique<SquareFactory>();
 
     std::vector<Vertex> triangle =
-    { Vertex(-0.1f, -0.1f, 0.0f), // Bottom left
-    Vertex(0.1f, -0.1f, 0.0f), // Bottom riht
-    Vertex(0.0f, 0.1f, 0.0f) }; // Top center
+    {
+        Vertex(-0.1f, -0.1f, 0.0f), // Bottom left
+        Vertex(0.1f, -0.1f, 0.0f),  // Bottom right
+        Vertex(0.0f, 0.1f, 0.0f)   // Top center
+    };
 
     std::vector<Vertex> square =
-    { Vertex(1.0f, -1.0f, 0.0f), // Bottom left
-    Vertex(1.1f, -1.0f, 0.0f), // Bottom riht
-    Vertex(2.0f, 0.5f, 0.0f),
-    Vertex(0.5f, 0.5f, 0.0f) }; // Top center
-
-
+    {
+        Vertex(0.1f, -0.1f, 0.0f),  // Bottom left (positioned to the right of the triangle)
+        Vertex(0.2f, -0.1f, 0.0f),  // Bottom right
+        Vertex(0.2f, 0.1f, 0.0f),  // Top right
+        Vertex(0.1f, 0.1f, 0.0f)   // Top left
+    };
 
     // indices
     std::vector<unsigned int> indicesT =
     { 0,1,2 }; // Draw Triangle
     std::vector<unsigned int> indicesS =
     { 0,1,2,
-      0,2,3}; // Draw Triangle
+      2,3,0}; // Draw Triangle
 
 
     std::unique_ptr<IModel> triangleModel = triangleFactory->CreateModel(triangle, indicesT,GLType::FLOAT);
