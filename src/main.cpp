@@ -8,7 +8,7 @@
 #include "Models.h"
 #include <iostream>
 #include <memory>
-
+#include <cmath>
 
 // Shader Vertex
 const char* vertexShaderSource = "#version 330 core\n"
@@ -132,6 +132,8 @@ int main(void)
     // Create samples of shapes to be rendered trinagles
     std::unique_ptr<IModelFactory> triangleFactory = std::make_unique<TriangleFactory>();
     std::unique_ptr<IModelFactory> squareFactory = std::make_unique<SquareFactory>();
+    std::unique_ptr<IModelFactory> circleFactory = std::make_unique<CircleFactory>();
+
 
     std::vector<Vertex> triangle =
     {
@@ -148,16 +150,51 @@ int main(void)
         Vertex(0.1f, 0.1f, 0.0f)   // Top left
     };
 
+    // Circle position
+    std::vector<Vertex> circle;
+
+    int numSegment = 36; // Number of positions to draw the circle
+    float radius = 0.05f;
+    float xOffset = -0.2f; // Offset to position the circle to the left of tringle
+
+    // 0 <=theta <= 2pi
+    // X = radius * cos(theta) position that circle can assume in x axis
+    // Y = radious * sen(theta) position that circle can assume in y axis
+
+    // Fill up the possition of the circle
+    for (int i = 0; i < numSegment; i++)
+    {
+        float theta = 2.0f * 3.14f/*M_PI*/ * float(i) / float(numSegment);
+        float x = radius * cos(theta) + xOffset;
+        float y = radius * sin(theta);
+        circle.push_back(Vertex(x, y, 0.0f));
+    }
+
+
+
     // indices
     std::vector<unsigned int> indicesT =
     { 0,1,2 }; // Draw Triangle
     std::vector<unsigned int> indicesS =
     { 0,1,2,
       2,3,0}; // Draw Triangle
+    std::vector<unsigned int> indicesC;
+
+    // Adjust the circle's indices
+    for (int i = 0; i < numSegment - 1; i++) {
+        indicesC.push_back(i);
+        indicesC.push_back(i + 1);
+    }
+    indicesC.push_back(numSegment - 1);
+    indicesC.push_back(0);
+
+
+
 
 
     std::unique_ptr<IModel> triangleModel = triangleFactory->CreateModel(triangle, indicesT,GLType::FLOAT);
     std::unique_ptr<IModel> squareModel = squareFactory->CreateModel(square, indicesS, GLType::FLOAT);
+    std::unique_ptr<IModel> circleModel = circleFactory->CreateModel(circle, indicesC, GLType::FLOAT);
 
     
     // Check if the ESC keys was pressed or the window was closed
