@@ -31,6 +31,7 @@ class CircleFactory : public IModelFactory
 {
 public:
     CircleFactory() {
+        std::cout << "Circle Created" << std::endl;
     };
     ~CircleFactory() {};
     std::unique_ptr<IModel> CreateModel(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)  override;

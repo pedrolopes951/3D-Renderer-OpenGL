@@ -10,6 +10,8 @@
 #include <memory>
 #include <cmath>
 
+#define PI 3.14159265359
+
 // Shader Vertex
 const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
@@ -47,7 +49,7 @@ void Shader(unsigned int& shaderProgram)
     // fragment shader
     unsigned int fragmentShader = GLCall(glCreateShader(GL_FRAGMENT_SHADER));
     GLCall(glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL));
-    GLCall( glCompileShader(fragmentShader));
+    GLCall(glCompileShader(fragmentShader));
     // check for shader compile errors
     GLCall(glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success));
     if (!success)
@@ -58,7 +60,7 @@ void Shader(unsigned int& shaderProgram)
     // link shaders
     shaderProgram = GLCall(glCreateProgram());
     GLCall(glAttachShader(shaderProgram, vertexShader));
-    GLCall( glAttachShader(shaderProgram, fragmentShader));
+    GLCall(glAttachShader(shaderProgram, fragmentShader));
     GLCall(glLinkProgram(shaderProgram));
     // check for linking errors
     GLCall(glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success));
@@ -162,9 +164,9 @@ int main(void)
     // Y = radious * sen(theta) position that circle can assume in y axis
 
     // Fill up the possition of the circle
-    for (int i = 0; i < numSegment; i++)
+    for (int i = 0; i <= numSegment; i++)
     {
-        float theta = 2.0f * 3.14f/*M_PI*/ * float(i) / float(numSegment);
+        float theta = 2.0f * PI * float(i) / float(numSegment);
         float x = radius * cos(theta) + xOffset;
         float y = radius * sin(theta);
         circle.push_back(Vertex(x, y, 0.0f));
@@ -177,26 +179,20 @@ int main(void)
     { 0,1,2 }; // Draw Triangle
     std::vector<unsigned int> indicesS =
     { 0,1,2,
-      2,3,0}; // Draw Triangle
+      2,3,0 }; // Draw Square
     std::vector<unsigned int> indicesC;
 
     // Adjust the circle's indices
-    for (int i = 0; i < numSegment - 1; i++) {
+    for (int i = 0; i <= numSegment; i++) {
         indicesC.push_back(i);
-        indicesC.push_back(i + 1);
     }
-    indicesC.push_back(numSegment - 1);
-    indicesC.push_back(0);
+    
 
-
-
-
-
-    std::unique_ptr<IModel> triangleModel = triangleFactory->CreateModel(triangle, indicesT,GLType::FLOAT);
+    std::unique_ptr<IModel> triangleModel = triangleFactory->CreateModel(triangle, indicesT, GLType::FLOAT);
     std::unique_ptr<IModel> squareModel = squareFactory->CreateModel(square, indicesS, GLType::FLOAT);
     std::unique_ptr<IModel> circleModel = circleFactory->CreateModel(circle, indicesC, GLType::FLOAT);
 
-    
+
     // Check if the ESC keys was pressed or the window was closed
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
     {
@@ -205,6 +201,7 @@ int main(void)
         //GLCall(glUseProgram(shaderProgram));
         triangleModel->Render();
         squareModel->Render();
+        circleModel->Render();
         //glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         GLCall(glfwSwapBuffers(window)); // wap the color buffer (a large 2D buffer that contains color values for each pixel in GLFW's window) that is used to render to during this render iteration and show it as output to the screen.
         GLCall(glfwPollEvents());

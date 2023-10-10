@@ -100,5 +100,5 @@ void Circle::Render()
 {
     m_va.Bind();
     m_eb.Bind();
-    GLCall(glDrawElements(GL_TRIANGLES, m_eb.GetCount(), GL_UNSIGNED_INT, nullptr));
+    GLCall(glDrawElements(GL_TRIANGLE_FAN, m_countvertices + 1, GL_UNSIGNED_INT, 0));
 }
