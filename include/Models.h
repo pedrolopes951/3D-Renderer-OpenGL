@@ -9,7 +9,7 @@
 class Triangle : public IModel
 {
 public:
-    Triangle(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices);
+    Triangle(const std::vector<Vertex2D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices);
     ~Triangle();
     void Render() override; // When using glDrawElements we're going to draw using indices provided in the element buffer object currently bound
 private:
@@ -25,7 +25,7 @@ private:
 class Square : public IModel
 {
 public:
-    Square(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices);
+    Square(const std::vector<Vertex2D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices);
     ~Square();
     void Render() override;
 
@@ -43,7 +43,7 @@ private:
 class Circle : public IModel
 {
 public:
-    Circle(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb ,const GLType typeVertices) ;
+    Circle(const std::vector<Vertex2D>& vertex, const std::vector<unsigned int>& eb ,const GLType typeVertices) ;
     ~Circle();
     void Render() override;
 

@@ -137,23 +137,23 @@ int main(void)
     std::unique_ptr<IModelFactory> circleFactory = std::make_unique<CircleFactory>();
 
 
-    std::vector<Vertex> triangle =
+    std::vector<Vertex2D> triangle =
     {
-        Vertex(-0.1f, -0.1f, 0.0f), // Bottom left
-        Vertex(0.1f, -0.1f, 0.0f),  // Bottom right
-        Vertex(0.0f, 0.1f, 0.0f)   // Top center
+        Vertex2D(-0.1f, -0.1), //Bottom left
+        Vertex2D(0.1f, -0.1f),  // Bottom right
+        Vertex2D(0.0f, 0.1) // Top center
     };
 
-    std::vector<Vertex> square =
+    std::vector<Vertex2D> square =
     {
-        Vertex(0.1f, -0.1f, 0.0f),  // Bottom left (positioned to the right of the triangle)
-        Vertex(0.2f, -0.1f, 0.0f),  // Bottom right
-        Vertex(0.2f, 0.1f, 0.0f),  // Top right
-        Vertex(0.1f, 0.1f, 0.0f)   // Top left
+        Vertex2D(0.1f, -0.1f), // Bottom left (positioned to the right of the triangle)
+        Vertex2D(0.2f, -0.1f), // Bottom right
+        Vertex2D(0.2f, 0.1f), // Top right
+        Vertex2D(0.1f, 0.1f) // Top left
     };
 
     // Circle position
-    std::vector<Vertex> circle;
+    std::vector<Vertex2D> circle;
 
     int numSegment = 36; // Number of positions to draw the circle
     float radius = 0.05f;
@@ -169,7 +169,7 @@ int main(void)
         float theta = 2.0f * PI * float(i) / float(numSegment);
         float x = radius * cos(theta) + xOffset;
         float y = radius * sin(theta);
-        circle.push_back(Vertex(x, y, 0.0f));
+        circle.push_back(Vertex2D(x, y));
     }
 
 
@@ -188,9 +188,9 @@ int main(void)
     }
     
 
-    std::unique_ptr<IModel> triangleModel = triangleFactory->CreateModel(triangle, indicesT, GLType::FLOAT);
-    std::unique_ptr<IModel> squareModel = squareFactory->CreateModel(square, indicesS, GLType::FLOAT);
-    std::unique_ptr<IModel> circleModel = circleFactory->CreateModel(circle, indicesC, GLType::FLOAT);
+    std::unique_ptr<IModel> triangleModel = triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D);
+    std::unique_ptr<IModel> squareModel = squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D);
+    std::unique_ptr<IModel> circleModel = circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D);
 
 
     // Check if the ESC keys was pressed or the window was closed

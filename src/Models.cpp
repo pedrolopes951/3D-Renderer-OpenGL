@@ -1,10 +1,16 @@
 #include "Models.h"
 
 
-Triangle::Triangle(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices) : m_vb{vertex}, m_eb{eb}, m_layout{}, m_va{}, m_countvertices{ m_eb.GetCount() }
+Triangle::Triangle(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices) : m_vb{vertex}, m_eb{eb}, m_layout{}, m_va{}, m_countvertices{ vertex.size()}
 {
     switch (typeVertices)
     {
+    case GLType::VERTEX3D:
+        m_layout.AddVertex3D(m_countvertices);
+        break;
+    case GLType::VERTEX2D:
+        m_layout.AddVertex2D(m_countvertices);
+        break;
     case GLType::FLOAT:
         m_layout.AddFloat(m_countvertices);
         break;

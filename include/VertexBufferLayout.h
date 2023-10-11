@@ -6,18 +6,19 @@
 // This struct defines the properties of a single vertex attribute.
 struct VertexBufferElement
 {
-    unsigned int type; // Data type, GL_FLOT, GL:UNSIGNED
+    GLType type; // Data type, GL_FLOT, GL:UNSIGNED
     unsigned int count; //  How many Components make up the attributes (1 for scalar, 2 for 2d vectors , 3 for 3d vector ...)
     unsigned char normalized; // SHould or not be normalized the data 
 
-    static unsigned int GetSizeOfType(unsigned int type)
+    static unsigned int GetSizeOfType(GLType type)
     {
         switch (type)
         {
-
-        case GL_FLOAT: return sizeof(GLfloat);
-        case GL_UNSIGNED_INT: return sizeof(GLuint);
-        case GL_UNSIGNED_BYTE: return sizeof(GLbyte);
+        case GLType::VERTEX3D: return 3 * sizeof(GLfloat);
+        case GLType::VERTEX2D: return 2 * sizeof(GLfloat);
+        case GLType::FLOAT : return sizeof(GLfloat);
+        case GLType::UNSIGNED_INT: return sizeof(GLuint);
+        case GLType::UNSIGNED_BYTE: return sizeof(GLbyte);
         }
         ASSERT(false);
         return 0;
@@ -36,16 +37,17 @@ private:
 public:
     VertexBufferLayout() :
         m_Stride(0) { }
-
-    void AddFloat(unsigned int count) { Push(GL_FLOAT, count, GL_FALSE); }
-    void AddUnsignedInt(unsigned int count) { Push(GL_UNSIGNED_INT, count, GL_FALSE); }
-    void AddUnsignedByte(unsigned int count) { Push(GL_UNSIGNED_BYTE, count, GL_TRUE); }
+    void AddVertex3D(unsigned int count) { Push(GLType::VERTEX3D, count, GL_FALSE); }
+    void AddVertex2D(unsigned int count) { Push(GLType::FLOAT, count, GL_FALSE); }
+    void AddFloat(unsigned int count) { Push(GLType::FLOAT, count, GL_FALSE); }
+    void AddUnsignedInt(unsigned int count) { Push(GLType::UNSIGNED_INT, count, GL_FALSE); }
+    void AddUnsignedByte(unsigned int count) { Push(GLType::UNSIGNED_BYTE, count, GL_TRUE); }
 
     const std::vector<VertexBufferElement> GetElements() const { return m_Elements; };
     unsigned int GetStride() const { return m_Stride; };
 
 private:
-    void Push(unsigned int type, unsigned int count, unsigned char normalized)
+    void Push(GLType type, unsigned int count, unsigned char normalized)
     {
         struct VertexBufferElement vbe = { type, count, normalized };
         m_Elements.push_back(vbe);

@@ -10,31 +10,31 @@ public:
         std::cout << "Triangle Created" <<  std::endl;
     };
     ~TriangleFactory(){};
-    std::unique_ptr<IModel> CreateModel(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)  override;
-
-private:
-
-};
-class SquareFactory : public IModelFactory
-{
-public:
-    SquareFactory() {
-        std::cout << "Square Created" << std::endl;
-    };
-    ~SquareFactory() {};
-    std::unique_ptr<IModel> CreateModel(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)  override;
-
-private:
-
-};
-class CircleFactory : public IModelFactory
-{
-public:
-    CircleFactory() {
-        std::cout << "Circle Created" << std::endl;
-    };
-    ~CircleFactory() {};
-    std::unique_ptr<IModel> CreateModel(const std::vector<Vertex>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)  override;
+    std::unique_ptr<IModel> Create2DModel(const std::vector<Vertex2D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)  override;
+                                                          
+private:                                                  
+                                                          
+};                                                        
+class SquareFactory : public IModelFactory                
+{                                                         
+public:                                                   
+    SquareFactory() {                                     
+        std::cout << "Square Created" << std::endl;       
+    };                                                    
+    ~SquareFactory() {};                                  
+    std::unique_ptr<IModel> Create2DModel(const std::vector<Vertex2D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)  override;
+                                                          
+private:                                                  
+                                                          
+};                                                        
+class CircleFactory : public IModelFactory                
+{                                                         
+public:                                                   
+    CircleFactory() {                                     
+        std::cout << "Circle Created" << std::endl;       
+    };                                                    
+    ~CircleFactory() {};                                  
+    std::unique_ptr<IModel> Create2DModel(const std::vector<Vertex2D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)  override;
 
 private:
 
