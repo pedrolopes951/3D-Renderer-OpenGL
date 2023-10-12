@@ -188,9 +188,9 @@ int main(void)
     }
     
 
-    std::unique_ptr<IModel> triangleModel = triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D);
+    //std::unique_ptr<IModel> triangleModel = triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D);
     std::unique_ptr<IModel> squareModel = squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D);
-    std::unique_ptr<IModel> circleModel = circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D);
+    //std::unique_ptr<IModel> circleModel = circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D);
 
 
     // Check if the ESC keys was pressed or the window was closed
@@ -199,9 +199,9 @@ int main(void)
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
         // draw our first triangle
         //GLCall(glUseProgram(shaderProgram));
-        triangleModel->Render();
+        //triangleModel->Render();
         squareModel->Render();
-        circleModel->Render();
+        //circleModel->Render();
         //glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         GLCall(glfwSwapBuffers(window)); // wap the color buffer (a large 2D buffer that contains color values for each pixel in GLFW's window) that is used to render to during this render iteration and show it as output to the screen.
         GLCall(glfwPollEvents());

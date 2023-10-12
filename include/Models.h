@@ -13,8 +13,8 @@ public:
     ~Triangle();
     void Render() override; // When using glDrawElements we're going to draw using indices provided in the element buffer object currently bound
 private:
-    VertexArray m_va;
-    VertexBuffer m_vb;
+    VertexArray<Vertex2D> m_va;
+    VertexBuffer<Vertex2D> m_vb;
     VertexBufferLayout m_layout;
     ElementBuffer m_eb;
 
@@ -31,8 +31,8 @@ public:
 
 
 private:
-    VertexArray m_va;
-    VertexBuffer m_vb;
+    VertexArray<Vertex2D> m_va;
+    VertexBuffer<Vertex2D> m_vb;
     VertexBufferLayout m_layout;
     ElementBuffer m_eb;
     unsigned int m_countvertices;
@@ -48,8 +48,8 @@ public:
     void Render() override;
 
 private:
-    VertexArray m_va;
-    VertexBuffer m_vb;
+    VertexArray<Vertex2D> m_va;
+    VertexBuffer<Vertex2D> m_vb;
     VertexBufferLayout m_layout;
     ElementBuffer m_eb;
 

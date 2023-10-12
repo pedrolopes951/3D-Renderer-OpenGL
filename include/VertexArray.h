@@ -18,7 +18,7 @@ public:
     }
 
 
-    void AddBuffer(const VertexBuffer<T>& vb, const VertexBufferLayout& layout)
+    void AddBuffer(const VertexBuffer<T>& vb, const VertexBufferLayout& layout, GLType type)
     {
         Bind(); // Performs operation in this VAO
         vb.Bind(); // Makes this VBO active for attribute data
@@ -29,7 +29,7 @@ public:
         {
             const VertexBufferElement element = elements[i];
             GLCall(glEnableVertexAttribArray(i)); // Enable the vertex attribute at index i
-            GLCall(glVertexAttribPointer(i, element.count, element.type, element.normalized,
+            GLCall(glVertexAttribPointer(i, element.count, VertexBufferElement::ConvertGLType(element.type), element.normalized,
                 layout.GetStride(), INT2VOIDP(offset))); // Specifies how the attribute data is organized in the VBO and how it should be interpreted by shaders.
             offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
 
@@ -37,8 +37,8 @@ public:
         }
 
 
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(T), (void*)0);// TODO : This needs to fo inside the for loop for the elements I wan to draw
-        glEnableVertexAttribArray(0);
+        //glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE,sizeof(T), (void*)0);// TODO : This needs to fo inside the for loop for the elements I wan to draw
+        //glEnableVertexAttribArray(0);
     }
     void Bind() const
     {

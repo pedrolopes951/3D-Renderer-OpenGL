@@ -24,3 +24,5 @@ enum class GLType
     VERTEX2D,
     VERTEX3D
 };
+
+
