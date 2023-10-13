@@ -36,9 +36,6 @@ public:
             // Update the maximum number of vertex attributes
         }
 
-
-        //glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE,sizeof(T), (void*)0);// TODO : This needs to fo inside the for loop for the elements I wan to draw
-        //glEnableVertexAttribArray(0);
     }
     void Bind() const
     {

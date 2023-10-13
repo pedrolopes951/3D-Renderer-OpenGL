@@ -18,7 +18,7 @@ private:
     VertexBufferLayout m_layout;
     ElementBuffer m_eb;
 
-    unsigned int m_countvertices;
+    
 
 };
 
@@ -35,7 +35,7 @@ private:
     VertexBuffer<Vertex2D> m_vb;
     VertexBufferLayout m_layout;
     ElementBuffer m_eb;
-    unsigned int m_countvertices;
+    
 
 
 };
@@ -53,7 +53,7 @@ private:
     VertexBufferLayout m_layout;
     ElementBuffer m_eb;
 
-    unsigned int m_countvertices;
+    
 
 
 };
