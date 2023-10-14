@@ -1,6 +1,6 @@
 #include "Models.h"
 
-constexpr int NUMCOUNT1D = 2;
+constexpr int NUMCOUNT1D = 1;
 constexpr int NUMCOUNT2D = 2;
 constexpr int NUMCOUNT3D = 3;
 
@@ -11,7 +11,7 @@ Triangle::Triangle(const std::vector<Vertex2D>& vertex, const std::vector<unsign
     switch (typeVertices)
     {
     case GLType::VERTEX3D:
-        m_layout.AddVertex3D(NUMCOUNT2D);
+        m_layout.AddVertex3D(NUMCOUNT3D);
         m_va.AddBuffer(m_vb, m_layout, typeVertices);
         break;
     case GLType::VERTEX2D:
@@ -55,7 +55,7 @@ Square::Square(const std::vector<Vertex2D>& vertex, const std::vector<unsigned i
     switch (typeVertices)
     {
     case GLType::VERTEX3D:
-        m_layout.AddVertex3D(NUMCOUNT2D);
+        m_layout.AddVertex3D(NUMCOUNT3D);
         m_va.AddBuffer(m_vb, m_layout, typeVertices);
         break;
     case GLType::VERTEX2D:
@@ -99,7 +99,7 @@ Circle::Circle(const std::vector<Vertex2D>& vertex, const std::vector<unsigned i
     switch (typeVertices)
     {
     case GLType::VERTEX3D:
-        m_layout.AddVertex3D(NUMCOUNT2D);
+        m_layout.AddVertex3D(NUMCOUNT3D);
         m_va.AddBuffer(m_vb, m_layout, typeVertices);
         break;
     case GLType::VERTEX2D:

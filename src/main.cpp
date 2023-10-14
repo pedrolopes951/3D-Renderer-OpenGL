@@ -12,66 +12,6 @@
 
 #define PI 3.14159265359
 
-// Shader Vertex
-const char* vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-"}\0";
-// Fragment shader
-const char* fragmentShaderSource = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-"}\n\0";
-
-
-
-void Shader(unsigned int& shaderProgram)
-{
-    // build and compile our shader program
-    // ------------------------------------
-    // vertex shader
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    GLCall(glShaderSource(vertexShader, 1, &vertexShaderSource, NULL));
-    GLCall(glCompileShader(vertexShader));
-    // check for shader compile errors
-    int success;
-    char infoLog[512];
-    GLCall(glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success));
-    if (!success)
-    {
-        GLCall(glGetShaderInfoLog(vertexShader, 512, NULL, infoLog));
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    // fragment shader
-    unsigned int fragmentShader = GLCall(glCreateShader(GL_FRAGMENT_SHADER));
-    GLCall(glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL));
-    GLCall(glCompileShader(fragmentShader));
-    // check for shader compile errors
-    GLCall(glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success));
-    if (!success)
-    {
-        GLCall(glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog));
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    // link shaders
-    shaderProgram = GLCall(glCreateProgram());
-    GLCall(glAttachShader(shaderProgram, vertexShader));
-    GLCall(glAttachShader(shaderProgram, fragmentShader));
-    GLCall(glLinkProgram(shaderProgram));
-    // check for linking errors
-    GLCall(glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success));
-    if (!success) {
-        GLCall(glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog));
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-    }
-    GLCall(glDeleteShader(vertexShader));
-    GLCall(glDeleteShader(fragmentShader));
-}
-
 GLFWwindow* InitWindow()
 {
     // GLFW Provides a library to manage thigs like creting window, managing user input, and provinding event driven framework
@@ -169,6 +109,9 @@ int main(void)
         float theta = 2.0f * PI * float(i) / float(numSegment);
         float x = radius * cos(theta) + xOffset;
         float y = radius * sin(theta);
+
+
+
         circle.push_back(Vertex2D(x, y));
     }
 
