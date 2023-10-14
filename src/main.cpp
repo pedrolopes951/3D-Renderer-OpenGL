@@ -12,6 +12,10 @@
 
 #define PI 3.14159265359
 
+// Vertex shaders process vertex data, while fragment shaders determine the final color of each pixel.
+
+
+
 GLFWwindow* InitWindow()
 {
     // GLFW Provides a library to manage thigs like creting window, managing user input, and provinding event driven framework
