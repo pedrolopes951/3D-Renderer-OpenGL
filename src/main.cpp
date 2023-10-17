@@ -4,6 +4,7 @@
 // Include GLFW
 #include <GLFW/glfw3.h>
 
+#include "Shader.h"
 #include "FactoryModels.h"
 #include "Models.h"
 #include <iostream>
@@ -74,11 +75,14 @@ int main(void)
     //// Build Shader
     //unsigned int shaderProgram;
     //Shader(shaderProgram);
-
+    Shader shader("shaders/VertexShader.glsl", "shaders/FragmentShader.glsl");
     // Create samples of shapes to be rendered trinagles
     std::unique_ptr<IModelFactory> triangleFactory = std::make_unique<TriangleFactory>();
     std::unique_ptr<IModelFactory> squareFactory = std::make_unique<SquareFactory>();
     std::unique_ptr<IModelFactory> circleFactory = std::make_unique<CircleFactory>();
+
+
+
 
 
     std::vector<Vertex2D> triangle =
@@ -146,6 +150,8 @@ int main(void)
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
         // draw our first triangle
         //GLCall(glUseProgram(shaderProgram));
+
+        shader.use();
         triangleModel->Render();
         squareModel->Render();
         circleModel->Render();
