@@ -75,12 +75,11 @@ int main(void)
     //// Build Shader
     //unsigned int shaderProgram;
     //Shader(shaderProgram);
-    Shader shader("shaders/VertexShader.glsl", "shaders/FragmentShader.glsl");
+   
     // Create samples of shapes to be rendered trinagles
     std::unique_ptr<IModelFactory> triangleFactory = std::make_unique<TriangleFactory>();
     std::unique_ptr<IModelFactory> squareFactory = std::make_unique<SquareFactory>();
     std::unique_ptr<IModelFactory> circleFactory = std::make_unique<CircleFactory>();
-
 
 
 
@@ -137,13 +136,17 @@ int main(void)
     for (int i = 0; i <= numSegment; i++) {
         indicesC.push_back(i);
     }
-    
+
+    Shader shader("shaders/Basic.shader");
+    shader.Bind();
+    shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
 
     std::unique_ptr<IModel> triangleModel = triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D);
     std::unique_ptr<IModel> squareModel = squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D);
     std::unique_ptr<IModel> circleModel = circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D);
 
 
+    shader.Unbind();
     // Check if the ESC keys was pressed or the window was closed
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
     {
@@ -151,7 +154,8 @@ int main(void)
         // draw our first triangle
         //GLCall(glUseProgram(shaderProgram));
 
-        shader.use();
+        shader.Bind();
+        shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
         triangleModel->Render();
         squareModel->Render();
         circleModel->Render();

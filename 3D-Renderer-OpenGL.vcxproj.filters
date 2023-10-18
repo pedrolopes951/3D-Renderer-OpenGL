@@ -1365,7 +1365,6 @@
     <None Include="src\glm\gtx\wrap.inl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="shaders\VertexShader.glsl" />
-    <None Include="shaders\FragmentShader.glsl" />
+    <None Include="shaders\Basic.shader" />
   </ItemGroup>
 </Project>

@@ -461,8 +461,7 @@
   <ItemGroup>
     <None Include="LICENSE" />
     <None Include="README.md" />
-    <None Include="shaders\FragmentShader.glsl" />
-    <None Include="shaders\VertexShader.glsl" />
+    <None Include="shaders\Basic.shader" />
     <None Include="src\glm\detail\func_common.inl" />
     <None Include="src\glm\detail\func_common_simd.inl" />
     <None Include="src\glm\detail\func_exponential.inl" />
