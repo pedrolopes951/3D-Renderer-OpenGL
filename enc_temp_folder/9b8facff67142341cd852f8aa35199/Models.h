@@ -2,8 +2,6 @@
 #include "IModels.h"
 #include "ElementBuffer.h"
 #include "Vertex.h"
-#include "Transformation.h"
-#include "Shader.h"
 
 // Base Model Class Method
 
@@ -19,9 +17,6 @@ private:
     VertexBuffer<Vertex2D> m_vb;
     VertexBufferLayout m_layout;
     ElementBuffer m_eb;
-    Shader m_shader;
-    Transformation m_transformation;
-
 
     
 
@@ -40,8 +35,6 @@ private:
     VertexBuffer<Vertex2D> m_vb;
     VertexBufferLayout m_layout;
     ElementBuffer m_eb;
-    Shader m_shader;
-    Transformation m_transformation;
     
 
 
@@ -59,8 +52,6 @@ private:
     VertexBuffer<Vertex2D> m_vb;
     VertexBufferLayout m_layout;
     ElementBuffer m_eb;
-    Shader m_shader;
-    Transformation m_transformation;
 
     
 
