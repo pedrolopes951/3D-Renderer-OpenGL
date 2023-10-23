@@ -11,11 +11,101 @@
 #include <memory>
 #include <cmath>
 
+#include <glm/glm.hpp>
+// glm::translate, glm::rotate, glm::scale
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+
+#include <glm/gtx/string_cast.hpp>
+
+
+
 #define PI 3.14159265359
 
 // Vertex shaders process vertex data, while fragment shaders determine the final color of each pixel.
 
+void OperationsGlMath()
+{
+    // Summary : 2d/3D vecs, normalizing, dot(Computation of angle) and cross product(New Perpendicular vector)
 
+    // Create Vector
+    glm::vec3 A(4.0f, 0.0f, 0.0f);
+    glm::vec3 B(0.0f, 4.0f, 0.0f);
+
+    // Computation of the lenght of the vec3
+
+    std::cout << "||A|| = " << glm::length(A) << std::endl;
+
+    // Unit vector from A
+    std::cout << "A-hgat " << glm::to_string(glm::normalize(A)) << std::endl;
+
+    // Dot product of A and B
+    std::cout << "A.B : " << glm::dot(A, B) << std::endl; // 3x0 + 4x7 + 0x0  = 28
+
+
+
+    // Dot product of normalized A and normalized B
+    float dotproduct = glm::dot(glm::normalize(A), glm::normalize(B));
+
+    std::cout << "dotProduct: " << dotproduct << "\n";
+    std::cout << std::acos(dotproduct) * 180 / PI << "\n";
+
+
+    // For 3D System CrossProduct Right hand system
+    glm::vec3 C = glm::cross(A, B);
+    std::cout << "Cross product" << glm::to_string(C) << std::endl;
+
+
+}
+
+
+void MatrixOperations()
+{
+    // Create a vertex, w=1 means we have a position but if w= 0 is a vector
+    glm::vec4 vertex(1.0f, 5.0f, 1.0f, 1.f);
+
+    // Create a model matrix for our geometry, in this case it is a identity matrix 
+    glm::mat4 model(1.0f);
+
+    // We can then perform operations on this metrix
+    // Scalling Matrix
+
+    glm::mat4 models = glm::scale(glm::mat4(1.0f), glm::vec3(2.0f, 2.0f, 2.0f));
+
+    // Roatation Matrix
+    glm::mat4 modelr = glm::rotate(glm::mat4(1.0f),glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotate over the y-axis
+
+    // Translate Matrix building this translation matrix
+    glm::mat4 modelt = glm::translate(glm::mat4(1.0f), glm::vec3(0.f, 0.f, -2.f));
+
+
+
+    std::cout << glm::to_string(model[0]) << std::endl;
+    std::cout << glm::to_string(model[1]) << std::endl;
+    std::cout << glm::to_string(model[2]) << std::endl;
+    std::cout << glm::to_string(model[3]) << std::endl;
+
+    // Now apply our model matrix to the Vertex
+
+    // All all transformation together - 1- Translate then rotate then scale
+
+    //model = models * modelr * modelt;
+
+    model = modelt * modelr * models;
+
+
+    glm::vec4 worldspace_vertex = (model * vertex);
+
+    std::cout << "\n" << "our vertex in world space\n";
+    std::cout << glm::to_string(worldspace_vertex) << std::endl;
+
+
+
+
+
+
+}
 
 GLFWwindow* InitWindow()
 {
@@ -136,6 +226,14 @@ int main(void)
     for (int i = 0; i <= numSegment; i++) {
         indicesC.push_back(i);
     }
+
+    // Some Basic Math Operations
+   // OperationsGlMath();
+
+    // Matrix operations
+    MatrixOperations();
+
+
 
     Shader shader("shaders/Basic.shader");
     shader.Bind();
