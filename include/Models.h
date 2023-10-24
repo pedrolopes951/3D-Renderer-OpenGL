@@ -14,6 +14,7 @@ public:
     Triangle(const std::vector<Vertex2D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices);
     ~Triangle();
     void Render() override; // When using glDrawElements we're going to draw using indices provided in the element buffer object currently bound
+    void ApplyTransformation(const Transformation& transformation);
 private:
     VertexArray<Vertex2D> m_va;
     VertexBuffer<Vertex2D> m_vb;

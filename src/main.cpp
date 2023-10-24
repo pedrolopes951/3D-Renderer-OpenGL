@@ -235,16 +235,23 @@ int main(void)
 
 
 
-    Shader shader("shaders/Basic.shader");
-    shader.Bind();
-    shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
+    //Shader shader("shaders/Basic.shader");
+    /*shader.Bind();
+    shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);*/
 
     std::unique_ptr<IModel> triangleModel = triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D);
     std::unique_ptr<IModel> squareModel = squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D);
     std::unique_ptr<IModel> circleModel = circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D);
 
+    Transformation transformation;
 
-    shader.Unbind();
+    // Apply transformations to the transformation object
+    transformation.Translate(2.0f, 1.0f, 0.0f);
+    transformation.Rotate(45.0f, 0.0f, 0.0f, 1.0f);
+    transformation.Scale(1.5f, 1.5f, 1.0f);
+
+    triangleModel->ApplyTransformation(transformation);
+    //shader.Unbind();
     // Check if the ESC keys was pressed or the window was closed
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
     {
@@ -252,11 +259,11 @@ int main(void)
         // draw our first triangle
         //GLCall(glUseProgram(shaderProgram));
 
-        shader.Bind();
-        shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
+        //shader.Bind();
+        //shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
         triangleModel->Render();
-        squareModel->Render();
-        circleModel->Render();
+        //squareModel->Render();
+        //circleModel->Render();
         //glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         GLCall(glfwSwapBuffers(window)); // wap the color buffer (a large 2D buffer that contains color values for each pixel in GLFW's window) that is used to render to during this render iteration and show it as output to the screen.
         GLCall(glfwPollEvents());
