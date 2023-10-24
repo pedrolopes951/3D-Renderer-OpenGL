@@ -12,21 +12,13 @@ class Transformation
 public:
     Transformation();
     ~Transformation();
-    void Translate(float x, float y, float z) {
-        m_modelMatrix = glm::translate(m_modelMatrix, glm::vec3(x, y, z));
-    }
+    void Translate(float x, float y, float z);
 
-    void Rotate(float angle, float x, float y, float z) {
-        m_modelMatrix = glm::rotate(m_modelMatrix, glm::radians(angle), glm::vec3(x, y, z));
-    }
+    void Rotate(float angle, float x, float y, float z);
 
-    void Scale(float x, float y, float z) {
-        m_modelMatrix = glm::scale(m_modelMatrix, glm::vec3(x, y, z));
-    }
+    void Scale(float x, float y, float z);
 
-    const glm::mat4& GetModelMatrix() const {
-        return m_modelMatrix;
-    }
+    const glm::mat4& GetModelMatrix()const; 
 
 
 private:
