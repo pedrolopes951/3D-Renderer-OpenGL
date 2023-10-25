@@ -1,15 +1,15 @@
 #shader vertex
 #version 330 core
 
-layout(location = 0) in vec4 position;
+layout(location = 0) in vec4 position; //  is used for specifying layout details for attributes, buffers, or memory, often related to how data is organized or bound.
 
-uniform mat4 transform;
+uniform mat4 transform; // is used to declare shader variables representing values that don't change within the shader program and are accessible from all stages of the shader
 
 
 
 void main()
 {
-    gl_Position = transform * vec4(position, 1.0f);
+    gl_Position = transform* position;
 }
 
 #shader fragment

@@ -23,6 +23,11 @@ void  Transformation::Scale(float x, float y, float z) {
     m_modelMatrix = glm::scale(m_modelMatrix, glm::vec3(x, y, z));
 }
 
+void Transformation::Ortho(float left, float right, float bottom, float top)
+{
+    m_modelMatrix = glm::ortho(left, right, bottom, top);
+}
+
 const glm::mat4& Transformation::GetModelMatrix() const {
     return m_modelMatrix;
 }

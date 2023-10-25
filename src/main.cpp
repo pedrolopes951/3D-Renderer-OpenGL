@@ -246,21 +246,18 @@ int main(void)
     Transformation transformation;
 
     // Apply transformations to the transformation object
-    transformation.Translate(2.0f, 1.0f, 0.0f);
-    transformation.Rotate(45.0f, 0.0f, 0.0f, 1.0f);
-    transformation.Scale(1.5f, 1.5f, 1.0f);
+    //transformation.Translate(2.0f, 0.0f, 0.0f);
+    //transformation.Rotate(0.0f, 0.0f, 0.0f, 1.0f);
+    //transformation.Scale(1.0f, 1.0f, 0.0f);
+    transformation.Ortho(-2.0,2.0,-1.5,1.5);
 
-    triangleModel->ApplyTransformation(transformation);
     //shader.Unbind();
     // Check if the ESC keys was pressed or the window was closed
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
     {
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
-        // draw our first triangle
-        //GLCall(glUseProgram(shaderProgram));
-
-        //shader.Bind();
-        //shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
+      
+        triangleModel->ApplyTransformation(transformation);
         triangleModel->Render();
         //squareModel->Render();
         //circleModel->Render();

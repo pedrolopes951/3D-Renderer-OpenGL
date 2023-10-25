@@ -36,9 +36,8 @@ Triangle::Triangle(const std::vector<Vertex2D>& vertex, const std::vector<unsign
         break;
     }
 
-    //m_shader.Bind();
-    //// Set a color for now
-    //m_shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
+    m_shader.Bind();
+    m_shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
 }
 
 Triangle::~Triangle()

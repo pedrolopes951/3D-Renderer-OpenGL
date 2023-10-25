@@ -18,6 +18,8 @@ public:
 
     void Scale(float x, float y, float z);
 
+    void Ortho(float left, float right, float bottom, float top);
+
     const glm::mat4& GetModelMatrix()const; 
 
 
