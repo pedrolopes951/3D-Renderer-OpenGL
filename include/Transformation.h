@@ -18,6 +18,7 @@ public:
 
     void Scale(float x, float y, float z);
 
+    // This will multiply to place the model between the boundaries of the orthographic matrix so in a algebric perpective is just putting this in a normalized field
     void Ortho(float left, float right, float bottom, float top);
 
     const glm::mat4& GetModelMatrix()const; 

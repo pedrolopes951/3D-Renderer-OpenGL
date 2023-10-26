@@ -249,8 +249,7 @@ int main(void)
     //transformation.Translate(2.0f, 0.0f, 0.0f);
     //transformation.Rotate(0.0f, 0.0f, 0.0f, 1.0f);
     //transformation.Scale(1.0f, 1.0f, 0.0f);
-    transformation.Ortho(0.0f,960.0f,0.0f,540.f); // Orthographic where we refe
-
+    transformation.Ortho(0.0f,960.0f,0.0f,540.f); // Orthographic 
 
     //shader.Unbind();
     // Check if the ESC keys was pressed or the window was closed
