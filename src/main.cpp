@@ -25,7 +25,7 @@
 
 // Vertex shaders process vertex data, while fragment shaders determine the final color of each pixel.
 
-void OperationsGlMath()
+static void OperationsGlMath()
 {
     // Summary : 2d/3D vecs, normalizing, dot(Computation of angle) and cross product(New Perpendicular vector)
 
@@ -60,7 +60,7 @@ void OperationsGlMath()
 }
 
 
-void MatrixOperations()
+static void MatrixOperations()
 {
     // Create a vertex, w=1 means we have a position but if w= 0 is a vector
     glm::vec4 vertex(1.0f, 5.0f, 1.0f, 1.f);
@@ -88,7 +88,7 @@ void MatrixOperations()
 
     // Now apply our model matrix to the Vertex
 
-    // All all transformation together - 1- Translate then rotate then scale
+    // All all transformationTriangle together - 1- Translate then rotate then scale
 
     //model = models * modelr * modelt;
 
@@ -165,7 +165,7 @@ int main(void)
     //// Build Shader
     //unsigned int shaderProgram;
     //Shader(shaderProgram);
-   
+
     // Create samples of shapes to be rendered trinagles
     std::unique_ptr<IModelFactory> triangleFactory = std::make_unique<TriangleFactory>();
     std::unique_ptr<IModelFactory> squareFactory = std::make_unique<SquareFactory>();
@@ -176,26 +176,26 @@ int main(void)
 
     std::vector<Vertex2D> triangle =
     {
-        Vertex2D(0.0f, 0.0f), //Bottom left
-        Vertex2D(100.0f, 0.0f),  // Bottom right
-        Vertex2D(50.0f, 100.0) // Top center
+        Vertex2D(-50.0f, 0.0f), //Bottom left
+        Vertex2D(50.0f, 0.0f),  // Bottom right
+        Vertex2D(0.0f, 50.0f) // Top center
     };
 
     std::vector<Vertex2D> square =
     {
-        Vertex2D(0.0f, 0.0f), // Bottom left (positioned to the right of the triangle)
-        Vertex2D(100.0f, 0.0f), // Bottom right
-        Vertex2D(100.0f, 100.0f), // Top right
-        Vertex2D(0.0f, 100.0f) // Top left
+        Vertex2D(-50.0f, -50.0f), // Bottom left (positioned to the right of the triangle)
+        Vertex2D(50.0f, -50.0f), // Bottom right
+        Vertex2D(50.0f, 50.0f), // Top right
+        Vertex2D(-50.0f, 50.0f) // Top left
     };
 
     // Circle position
     std::vector<Vertex2D> circle;
 
     int numSegment = 36; // Number of positions to draw the circle
-    float radius = 100.00f;
-    float xOffset = 100.0f; // Offset to position the circle to the left of tringle
-    float yOffset = 100.0f;
+    float radius = 50.00f;
+    float xOffset = 0.0f; // Offset to position the circle to the left of tringle
+    float yOffset = 0.0f;
 
     // 0 <=theta <= 2pi
     // X = radius * cos(theta) position that circle can assume in x axis
@@ -206,7 +206,7 @@ int main(void)
     {
         float theta = 2.0f * PI * float(i) / float(numSegment);
         float x = radius * cos(theta) + xOffset;
-        float y = radius * sin(theta)+ yOffset;
+        float y = radius * sin(theta) + yOffset;
 
 
 
@@ -232,44 +232,52 @@ int main(void)
    // OperationsGlMath();
 
     // Matrix operations
-    MatrixOperations();
+    //MatrixOperations();
 
-
-
-    //Shader shader("shaders/Basic.shader");
-    /*shader.Bind();
-    shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);*/
 
     std::unique_ptr<IModel> triangleModel = triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D);
     std::unique_ptr<IModel> squareModel = squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D);
     std::unique_ptr<IModel> circleModel = circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D);
 
-    Transformation transformation;
-
-    //// Apply transformations to the transformation object
-    ////transformation.Rotate(0.0f, 0.0f, 0.0f, 1.0f);
-    transformation.Ortho(0.0f,960.0f,0.0f,540.f); // Orthographic where we refe
-    transformation.Translate(100.0f, 0.0f, 0.0f); // Translate the model to the right 100 units
-    transformation.Translate(100.0f, 100.0f, 0.0f); // Translate the model to the right 100 units and 100 units up
-    transformation.Scale(2.0f, 2.0f, 0.0f); // Scale it to  
+    Transformation transformationTriangle;
+    Transformation transformationSquare;
+    Transformation transformationCircle;
 
 
+    //// Apply transformation to the transformation object
+    transformationTriangle.Rotate(0.0f, 0.0f, 0.0f, 1.0f);
+    transformationTriangle.Ortho(0.0f, 960.0f, 0.0f, 540.f); // Orthographic where we refe
+    transformationTriangle.Translate(100.0f, 0.0f, 0.0f); // Translate the model to the right 100 units
+    //transformationTriangle.Translate(100.0f, 100.0f, 0.0f); // Translate the model to the right 100 units and 100 units up
+    //transformationTriangle.Scale(1.0f, 1.0f, 0.0f); // Scale it to
+
+    
+    transformationSquare.Rotate(0.0f, 0.0f, 0.0f, 1.0f); // Rotate 45 degrees overe the x axis
+    transformationSquare.Ortho(0.0f, 960.0f, 0.0f, 540.f); // Orthographic where we refe
+    transformationSquare.Translate(200.0f, 0.0f, 0.0f); // Translate the model to the left 100 units
+    //transformationSquare.Translate(-100.0f, 300.0f, 0.0f); // Translate the model to the right 100 units and 300 units up
+    //transformationSquare.Scale(1.0f, 1.0f, 0.0f); // Scale it to
 
 
+
+    transformationCircle.Rotate(0.0f, 0.0f, 0.0f, 1.0f);
+    transformationCircle.Ortho(0.0f, 960.0f, 0.0f, 540.f); // Orthographic where we refe
+    transformationCircle.Translate(300.0f, 0.0f, 0.0f); // Translate the model to the left 300 units
+    //transformationCircle.Translate(-400.0f, 200.0f, 0.0f); // Translate the model to the right 100 units and 100 units up
+    //transformationCircle.Scale(1.0f, 1.0f, 0.0f); // Scale it to
 
     //shader.Unbind();
     // Check if the ESC keys was pressed or the window was closed
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
     {
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
-      
-        triangleModel->ApplyTransformation(transformation);
+
+        triangleModel->ApplyTransformation(transformationTriangle);
         triangleModel->Render();
-        squareModel->ApplyTransformation(transformation);
+        squareModel->ApplyTransformation(transformationSquare);
         squareModel->Render();
-        circleModel->ApplyTransformation(transformation);
+        circleModel->ApplyTransformation(transformationCircle);
         circleModel->Render();
-        //glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         GLCall(glfwSwapBuffers(window)); // wap the color buffer (a large 2D buffer that contains color values for each pixel in GLFW's window) that is used to render to during this render iteration and show it as output to the screen.
         GLCall(glfwPollEvents());
     }

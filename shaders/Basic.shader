@@ -9,8 +9,7 @@ uniform mat4 u_Transform; // is used to declare shader variables representing va
 
 void main()
 {
-    //gl_Position = position;
-    gl_Position =u_Transform* position;
+    gl_Position = u_Transform* position;
 }
 
 #shader fragment
