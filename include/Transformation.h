@@ -11,6 +11,7 @@ class Transformation
 {
 public:
     Transformation();
+    Transformation(const Transformation& other) { m_modelMatrix = other.m_modelMatrix; };
     ~Transformation();
     void Translate(float x, float y, float z);
 

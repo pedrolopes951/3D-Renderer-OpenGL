@@ -248,6 +248,7 @@ int main(void)
     Transformation transformationSquare;
     Transformation transformationCircle;
 
+    // Shape Renderer (Window, vectors<IModels>);
 
     //// Apply transformation to the transformation object
     transformationTriangle.Rotate(0.0f, 0.0f, 0.0f, 1.0f);

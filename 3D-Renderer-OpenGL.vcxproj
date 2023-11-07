@@ -157,6 +157,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Models.cpp" />
     <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\ShapeRenderer.cpp" />
     <ClCompile Include="src\stb_image\stb_image.cpp" />
     <ClCompile Include="src\Transformation.cpp" />
     <ClCompile Include="src\VertexArray.cpp" />
@@ -166,6 +167,7 @@
   <ItemGroup>
     <ClInclude Include="include\ElementBuffer.h" />
     <ClInclude Include="include\Shader.h" />
+    <ClInclude Include="include\ShapeRenderer.h" />
     <ClInclude Include="include\Transformation.h" />
     <ClInclude Include="src\glm\common.hpp" />
     <ClInclude Include="src\glm\detail\compute_common.hpp" />
