@@ -29,6 +29,13 @@ void Transformation::Ortho(float left, float right, float bottom, float top)
 
 }
 
+void Transformation::Ortho(const glm::mat4& orthmatrix)
+{
+    m_modelMatrix = orthmatrix;
+
+}
+
+
 const glm::mat4& Transformation::GetModelMatrix() const {
     return m_modelMatrix;
 }

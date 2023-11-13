@@ -7,6 +7,7 @@
 #include "Shader.h"
 #include "FactoryModels.h"
 #include "Models.h"
+#include "ShapeRenderer.h"
 #include <iostream>
 #include <memory>
 #include <cmath>
@@ -15,18 +16,18 @@
 // glm::translate, glm::rotate, glm::scale
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
-
 #include <glm/gtx/string_cast.hpp>
 
+
+#include <glm/glm.hpp>
+// glm::translate, glm::rotate, gl
 // GUI
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
 
-
-#define PI 3.14159265359
+#include "Constants.h"
 
 // Vertex shaders process vertex data, while fragment shaders determine the final color of each pixel.
 
@@ -157,26 +158,16 @@ static GLFWwindow* InitWindow()
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 
-
     return window;
 }
 
-int main(void)
+
+static std::vector<std::unique_ptr<IModel>> InitModels()
 {
-    GLFWwindow* window = InitWindow();
-    if (!window)
-        return -1;
-
-    //// Build Shader
-    //unsigned int shaderProgram;
-    //Shader(shaderProgram);
-
     // Create samples of shapes to be rendered trinagles
     std::unique_ptr<IModelFactory> triangleFactory = std::make_unique<TriangleFactory>();
     std::unique_ptr<IModelFactory> squareFactory = std::make_unique<SquareFactory>();
     std::unique_ptr<IModelFactory> circleFactory = std::make_unique<CircleFactory>();
-
-
 
 
     std::vector<Vertex2D> triangle =
@@ -244,6 +235,25 @@ int main(void)
     std::unique_ptr<IModel> squareModel = squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D);
     std::unique_ptr<IModel> circleModel = circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D);
 
+    return std::vector<std::unique_ptr<IModel>>{triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D), squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D), circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D)};
+
+}
+
+int main(void)
+{
+    GLFWwindow* window = InitWindow();
+    if (!window)
+        return -1;
+
+    //// Build Shader
+    //unsigned int shaderProgram;
+    //Shader(shaderProgram);
+
+    auto models = InitModels();
+
+    ShapeRenderer(window, models, glm::ortho(0.0f, WINDOWWIDTH, 0.0f, WINDOWHEIGHT));
+    
+
     Transformation transformationTriangle;
     Transformation transformationSquare;
     Transformation transformationCircle;
@@ -252,14 +262,12 @@ int main(void)
 
     //// Apply transformation to the transformation object
     transformationTriangle.Rotate(0.0f, 0.0f, 0.0f, 1.0f);
-    transformationTriangle.Ortho(0.0f, 960.0f, 0.0f, 540.f); // Orthographic where we refe
     transformationTriangle.Translate(100.0f, 0.0f, 0.0f); // Translate the model to the right 100 units
     //transformationTriangle.Translate(100.0f, 100.0f, 0.0f); // Translate the model to the right 100 units and 100 units up
     //transformationTriangle.Scale(1.0f, 1.0f, 0.0f); // Scale it to
 
-    
+
     transformationSquare.Rotate(0.0f, 0.0f, 0.0f, 1.0f); // Rotate 45 degrees overe the x axis
-    transformationSquare.Ortho(0.0f, 960.0f, 0.0f, 540.f); // Orthographic where we refe
     transformationSquare.Translate(200.0f, 0.0f, 0.0f); // Translate the model to the left 100 units
     //transformationSquare.Translate(-100.0f, 300.0f, 0.0f); // Translate the model to the right 100 units and 300 units up
     //transformationSquare.Scale(1.0f, 1.0f, 0.0f); // Scale it to
@@ -267,7 +275,6 @@ int main(void)
 
 
     transformationCircle.Rotate(0.0f, 0.0f, 0.0f, 1.0f);
-    transformationCircle.Ortho(0.0f, 960.0f, 0.0f, 540.f); // Orthographic where we refe
     transformationCircle.Translate(300.0f, 0.0f, 0.0f); // Translate the model to the left 300 units
     //transformationCircle.Translate(-400.0f, 200.0f, 0.0f); // Translate the model to the right 100 units and 100 units up
     //transformationCircle.Scale(1.0f, 1.0f, 0.0f); // Scale it to
@@ -293,12 +300,12 @@ int main(void)
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
 
-        triangleModel->ApplyTransformation(transformationTriangle);
+        /*triangleModel->ApplyTransformation(transformationTriangle);
         triangleModel->Render();
         squareModel->ApplyTransformation(transformationSquare);
         squareModel->Render();
         circleModel->ApplyTransformation(transformationCircle);
-        circleModel->Render();
+        circleModel->Render();*/
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();

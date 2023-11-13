@@ -22,6 +22,8 @@ public:
     // This will multiply to place the model between the boundaries of the orthographic matrix so in a algebric perpective is just putting this in a normalized field
     void Ortho(float left, float right, float bottom, float top);
 
+    void Ortho(const glm::mat4& orthmatrix);
+
     const glm::mat4& GetModelMatrix()const; 
 
 
