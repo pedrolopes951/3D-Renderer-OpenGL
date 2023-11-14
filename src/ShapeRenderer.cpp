@@ -7,7 +7,12 @@
 
 ShapeRenderer::ShapeRenderer(GLFWwindow* window, std::vector<std::unique_ptr<IModel>>& models, const glm::mat4& orthomatrix) : m_window{window}, m_models_available{models}
 {
-    this->InitTransformationMatrices();
+    this->InitTransformationMatrices(orthomatrix);
+    const char* glsl_version = "#version 130";
+    ImGui::CreateContext();
+    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+    ImGui_ImplOpenGL3_Init(glsl_version);
+    ImGui::StyleColorsDark();
 }
 
 ShapeRenderer::~ShapeRenderer()
@@ -44,8 +49,13 @@ void ShapeRenderer::RenderImGuiWindow()
     const char* shapes[] = { "Triangle", "Square","Circle" };
     ImGui::Combo("Selected Shape", &m_selected_shape, shapes, IM_ARRAYSIZE(shapes));
 
-    ImGui::SliderFloat("Rotation Angle", &m_rotationAngle, 0.f, 360.f);
+    ImGui::SliderFloat("Rotation Angle", &m_rotationAngle.x, 0.f, 360.f);
+    // Add which axis to rotate from
+    ImGui::SliderFloat2("Translation OffsetX", (float*)&m_translation.x, 0.0f, 960.0f);
+    ImGui::SliderFloat2("Translation OffsetY", (float*)&m_translation.y, 0.0f, 540.0f);
+    ImGui::SliderFloat2("Translation OffsetZ", (float*)&m_translation.z, 0.0f, 0.0f);
 
+    ImGui::End()
 }
 
 void ShapeRenderer::InitTransformationMatrices(const glm::mat4& orthomatrix)

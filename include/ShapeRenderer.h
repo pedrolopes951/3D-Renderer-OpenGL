@@ -37,7 +37,7 @@ private:
     void InitTransformationMatrices(const glm::mat4& orthomatrix);
 
     int m_selected_shape = 0;
-    float m_rotationAngle = 0.0f;
+    glm::vec4 m_rotationAngle = { 0.f ,0.f,0.f,0.f };
     glm::vec3 m_translation{0.f,0.f,0.f};
 
     
