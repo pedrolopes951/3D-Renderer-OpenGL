@@ -5,7 +5,7 @@
 
 
 
-ShapeRenderer::ShapeRenderer(GLFWwindow* window, std::vector<std::unique_ptr<IModel>>& models, const glm::mat4& orthomatrix) : m_window{window}, m_models_available{models}
+ShapeRenderer::ShapeRenderer(GLFWwindow* window, std::map<std::string, std::unique_ptr<IModel>>& models, const glm::mat4& orthomatrix) : m_window{window}, m_models_available{models}
 {
     this->InitTransformationMatrices(orthomatrix);
     const char* glsl_version = "#version 130";
@@ -21,24 +21,33 @@ ShapeRenderer::~ShapeRenderer()
 
 void ShapeRenderer::Render()
 {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    this->RenderImGuiWindow();
+
     // Render the models and apply transformations
- /*   for (auto& i : m_models_available)
+   /* 
+    for (auto& i : m_models_available)
     {
         i->ApplyTransformation();
         i->Render();
     }
+
     triangleModel->ApplyTransformation(transformationTriangle);
     triangleModel->Render();
     squareModel->ApplyTransformation(transformationSquare);
     squareModel->Render();
     circleModel->ApplyTransformation(transformationCircle);
     circleModel->Render();*/
+
+    
+
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void ShapeRenderer::RenderShape()
-{
-
-}
 
 void ShapeRenderer::RenderImGuiWindow()
 {
@@ -55,7 +64,7 @@ void ShapeRenderer::RenderImGuiWindow()
     ImGui::SliderFloat2("Translation OffsetY", (float*)&m_translation.y, 0.0f, 540.0f);
     ImGui::SliderFloat2("Translation OffsetZ", (float*)&m_translation.z, 0.0f, 0.0f);
 
-    ImGui::End()
+    ImGui::End();
 }
 
 void ShapeRenderer::InitTransformationMatrices(const glm::mat4& orthomatrix)

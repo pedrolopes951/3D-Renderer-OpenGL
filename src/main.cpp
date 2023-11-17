@@ -1,3 +1,8 @@
+#include <iostream>
+#include <memory>
+#include <cmath>
+#include <map>
+
 // Include GLEW
 #include <GL/glew.h>
 
@@ -8,9 +13,6 @@
 #include "FactoryModels.h"
 #include "Models.h"
 #include "ShapeRenderer.h"
-#include <iostream>
-#include <memory>
-#include <cmath>
 
 #include <glm/glm.hpp>
 // glm::translate, glm::rotate, glm::scale
@@ -162,7 +164,7 @@ static GLFWwindow* InitWindow()
 }
 
 
-static std::vector<std::unique_ptr<IModel>> InitModels()
+static std::map<std::string,std::unique_ptr<IModel>> InitModels()
 {
     // Create samples of shapes to be rendered trinagles
     std::unique_ptr<IModelFactory> triangleFactory = std::make_unique<TriangleFactory>();
@@ -235,7 +237,7 @@ static std::vector<std::unique_ptr<IModel>> InitModels()
     std::unique_ptr<IModel> squareModel = squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D);
     std::unique_ptr<IModel> circleModel = circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D);
 
-    return std::vector<std::unique_ptr<IModel>>{triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D), squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D), circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D)};
+    return std::map<std::string, std::unique_ptr<IModel>>{{std::string(TRIANGLE), triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D) }, { std::string(SQUARE), squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D) }, { std::string(CIRCLE),circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D) }};
 
 }
 
@@ -251,7 +253,7 @@ int main(void)
 
     auto models = InitModels();
 
-    ShapeRenderer(window, models, glm::ortho(0.0f, WINDOWWIDTH, 0.0f, WINDOWHEIGHT));
+    ShapeRenderer  shaperender(window, models, glm::ortho(0.0f, WINDOWWIDTH, 0.0f, WINDOWHEIGHT));
     
 
     Transformation transformationTriangle;
@@ -282,15 +284,15 @@ int main(void)
     //shader.Unbind();
     // Check if the ESC keys was pressed or the window was closed
 
-    const char* glsl_version = "#version 130";
-    ImGui::CreateContext();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init(glsl_version);
-    ImGui::StyleColorsDark();
+    //const char* glsl_version = "#version 130";
+    //ImGui::CreateContext();
+    //ImGui_ImplGlfw_InitForOpenGL(window, true);
+    //ImGui_ImplOpenGL3_Init(glsl_version);
+    //ImGui::StyleColorsDark();
 
-    bool show_demo_window = true;
-    bool show_another_window = false;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    //bool show_demo_window = true;
+    //bool show_another_window = false;
+    //ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
    
     
@@ -306,14 +308,15 @@ int main(void)
         squareModel->Render();
         circleModel->ApplyTransformation(transformationCircle);
         circleModel->Render();*/
-        ImGui_ImplOpenGL3_NewFrame();
+        /*ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+        ImGui::NewFrame();*/
 
+        shaperender.Render();
      
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
-        {
+     /*   {
             static float f = 0.0f;
             static int counter = 0;
 
@@ -333,9 +336,9 @@ int main(void)
 
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
             ImGui::End();
-        }
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        }*/
+        // ImGui::Render();
+        // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         GLCall(glfwSwapBuffers(window)); // wap the color buffer (a large 2D buffer that contains color values for each pixel in GLFW's window) that is used to render to during this render iteration and show it as output to the screen.
         GLCall(glfwPollEvents());
     }

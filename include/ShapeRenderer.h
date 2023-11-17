@@ -24,14 +24,13 @@ enum class ShapesAvailable
 class ShapeRenderer
 {
 public:
-    ShapeRenderer(GLFWwindow* window, std::vector<std::unique_ptr<IModel>>& models,const glm::mat4& orthomatrix);
+    ShapeRenderer(GLFWwindow* window, std::map<std::string, std::unique_ptr<IModel>>& models,const glm::mat4& orthomatrix);
     ~ShapeRenderer();
     void Render();
 
 
 private:
 
-    void RenderShape();
     void RenderImGuiWindow();
 
     void InitTransformationMatrices(const glm::mat4& orthomatrix);
@@ -42,7 +41,7 @@ private:
 
     
     GLFWwindow* m_window;
-    std::vector<std::unique_ptr<IModel>>& m_models_available;
+    std::map<std::string, std::unique_ptr<IModel>>& m_models_available;
     std::map<ShapesAvailable,Transformation> m_transformation_matrices;
 
 };
