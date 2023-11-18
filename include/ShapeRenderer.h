@@ -15,16 +15,11 @@
 
 
 
-enum class ShapesAvailable
-{
-    TRIANGLE,
-    SQUARE,
-    CIRCLE
-};
+
 class ShapeRenderer
 {
 public:
-    ShapeRenderer(GLFWwindow* window, std::map<std::string, std::unique_ptr<IModel>>& models,const glm::mat4& orthomatrix);
+    ShapeRenderer(GLFWwindow* window, std::map<ModelShapes, std::shared_ptr<IModel>>& models,const glm::mat4& orthomatrix);
     ~ShapeRenderer();
     void Render();
 
@@ -38,10 +33,11 @@ private:
     int m_selected_shape = 0;
     glm::vec4 m_rotationAngle = { 0.f ,0.f,0.f,0.f };
     glm::vec3 m_translation{0.f,0.f,0.f};
+    glm::vec3 m_scaling{ 1.f,1.f,0.f };
 
     
     GLFWwindow* m_window;
-    std::map<std::string, std::unique_ptr<IModel>>& m_models_available;
-    std::map<ShapesAvailable,Transformation> m_transformation_matrices;
+    std::map<ModelShapes, std::shared_ptr<IModel>>& m_models_available;
+    std::map<ModelShapes,Transformation> m_transformation_matrices;
 
 };

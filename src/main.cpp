@@ -164,12 +164,12 @@ static GLFWwindow* InitWindow()
 }
 
 
-static std::map<std::string,std::unique_ptr<IModel>> InitModels()
+static  std::map<ModelShapes, std::shared_ptr<IModel>> InitModels()
 {
     // Create samples of shapes to be rendered trinagles
-    std::unique_ptr<IModelFactory> triangleFactory = std::make_unique<TriangleFactory>();
-    std::unique_ptr<IModelFactory> squareFactory = std::make_unique<SquareFactory>();
-    std::unique_ptr<IModelFactory> circleFactory = std::make_unique<CircleFactory>();
+    std::shared_ptr<IModelFactory> triangleFactory = std::make_shared<TriangleFactory>();
+    std::shared_ptr<IModelFactory> squareFactory = std::make_shared<SquareFactory>();
+    std::shared_ptr<IModelFactory> circleFactory = std::make_shared<CircleFactory>();
 
 
     std::vector<Vertex2D> triangle =
@@ -233,11 +233,11 @@ static std::map<std::string,std::unique_ptr<IModel>> InitModels()
     //MatrixOperations();
 
 
-    std::unique_ptr<IModel> triangleModel = triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D);
-    std::unique_ptr<IModel> squareModel = squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D);
-    std::unique_ptr<IModel> circleModel = circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D);
+   /* std::shared_ptr<IModel> triangleModel = triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D);
+    std::shared_ptr<IModel> squareModel = squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D);
+    std::shared_ptr<IModel> circleModel = circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D);*/
 
-    return std::map<std::string, std::unique_ptr<IModel>>{{std::string(TRIANGLE), triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D) }, { std::string(SQUARE), squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D) }, { std::string(CIRCLE),circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D) }};
+    return  std::map<ModelShapes, std::shared_ptr<IModel>>{{ModelShapes::TRIANGLE, triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D) }, { ModelShapes::SQUARE, squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D)}, { ModelShapes::CIRCLE,circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D) }};
 
 }
 
@@ -263,6 +263,10 @@ int main(void)
     // Shape Renderer (Window, vectors<IModels>);
 
     //// Apply transformation to the transformation object
+    transformationTriangle.Ortho(glm::ortho(0.0f, WINDOWWIDTH, 0.0f, WINDOWHEIGHT));
+    //transformationTriangle.Ortho(0.0f, WINDOWWIDTH, 0.0f, WINDOWHEIGHT);
+
+
     transformationTriangle.Rotate(0.0f, 0.0f, 0.0f, 1.0f);
     transformationTriangle.Translate(100.0f, 0.0f, 0.0f); // Translate the model to the right 100 units
     //transformationTriangle.Translate(100.0f, 100.0f, 0.0f); // Translate the model to the right 100 units and 100 units up
@@ -302,43 +306,18 @@ int main(void)
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
 
-        /*triangleModel->ApplyTransformation(transformationTriangle);
-        triangleModel->Render();
-        squareModel->ApplyTransformation(transformationSquare);
-        squareModel->Render();
-        circleModel->ApplyTransformation(transformationCircle);
-        circleModel->Render();*/
+        //models[ModelShapes::TRIANGLE]->ApplyTransformation(transformationTriangle);
+        //models[ModelShapes::TRIANGLE]->Render();
+        //squareModel->ApplyTransformation(transformationSquare);
+        //squareModel->Render();
+        //circleModel->ApplyTransformation(transformationCircle);
+        //circleModel->Render();*/
         /*ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();*/
 
         shaperender.Render();
      
-
-        // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
-     /*   {
-            static float f = 0.0f;
-            static int counter = 0;
-
-            ImGui::Begin("Hello, world!");
-
-            ImGui::Text("This is some useful text.");
-            ImGui::Checkbox("Demo Window", &show_demo_window);
-            ImGui::Checkbox("Another Window", &show_another_window);
-
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f); 
-            ImGui::ColorEdit3("clear color", (float*)&clear_color);
-
-            if (ImGui::Button("Button"))
-                counter++;
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
-
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-            ImGui::End();
-        }*/
-        // ImGui::Render();
-        // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         GLCall(glfwSwapBuffers(window)); // wap the color buffer (a large 2D buffer that contains color values for each pixel in GLFW's window) that is used to render to during this render iteration and show it as output to the screen.
         GLCall(glfwPollEvents());
     }
