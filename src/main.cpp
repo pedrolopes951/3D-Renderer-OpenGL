@@ -21,7 +21,6 @@
 #include <glm/gtx/string_cast.hpp>
 
 
-#include <glm/glm.hpp>
 // glm::translate, glm::rotate, gl
 // GUI
 #include "imgui/imgui.h"
@@ -233,10 +232,6 @@ static  std::map<ModelShapes, std::shared_ptr<IModel>> InitModels()
     //MatrixOperations();
 
 
-   /* std::shared_ptr<IModel> triangleModel = triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D);
-    std::shared_ptr<IModel> squareModel = squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D);
-    std::shared_ptr<IModel> circleModel = circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D);*/
-
     return  std::map<ModelShapes, std::shared_ptr<IModel>>{{ModelShapes::TRIANGLE, triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D) }, { ModelShapes::SQUARE, squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D)}, { ModelShapes::CIRCLE,circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D) }};
 
 }
@@ -247,74 +242,14 @@ int main(void)
     if (!window)
         return -1;
 
-    //// Build Shader
-    //unsigned int shaderProgram;
-    //Shader(shaderProgram);
-
     auto models = InitModels();
 
-    ShapeRenderer  shaperender(window, models, glm::ortho(0.0f, WINDOWWIDTH, 0.0f, WINDOWHEIGHT));
+    ShapeRenderer  shaperender(window, models);
     
-
-    Transformation transformationTriangle;
-    Transformation transformationSquare;
-    Transformation transformationCircle;
-
-    // Shape Renderer (Window, vectors<IModels>);
-
-    //// Apply transformation to the transformation object
-    transformationTriangle.Ortho(glm::ortho(0.0f, WINDOWWIDTH, 0.0f, WINDOWHEIGHT));
-    //transformationTriangle.Ortho(0.0f, WINDOWWIDTH, 0.0f, WINDOWHEIGHT);
-
-
-    transformationTriangle.Rotate(0.0f, 0.0f, 0.0f, 1.0f);
-    transformationTriangle.Translate(100.0f, 0.0f, 0.0f); // Translate the model to the right 100 units
-    //transformationTriangle.Translate(100.0f, 100.0f, 0.0f); // Translate the model to the right 100 units and 100 units up
-    //transformationTriangle.Scale(1.0f, 1.0f, 0.0f); // Scale it to
-
-
-    transformationSquare.Rotate(0.0f, 0.0f, 0.0f, 1.0f); // Rotate 45 degrees overe the x axis
-    transformationSquare.Translate(200.0f, 0.0f, 0.0f); // Translate the model to the left 100 units
-    //transformationSquare.Translate(-100.0f, 300.0f, 0.0f); // Translate the model to the right 100 units and 300 units up
-    //transformationSquare.Scale(1.0f, 1.0f, 0.0f); // Scale it to
-
-
-
-    transformationCircle.Rotate(0.0f, 0.0f, 0.0f, 1.0f);
-    transformationCircle.Translate(300.0f, 0.0f, 0.0f); // Translate the model to the left 300 units
-    //transformationCircle.Translate(-400.0f, 200.0f, 0.0f); // Translate the model to the right 100 units and 100 units up
-    //transformationCircle.Scale(1.0f, 1.0f, 0.0f); // Scale it to
-
-    //shader.Unbind();
-    // Check if the ESC keys was pressed or the window was closed
-
-    //const char* glsl_version = "#version 130";
-    //ImGui::CreateContext();
-    //ImGui_ImplGlfw_InitForOpenGL(window, true);
-    //ImGui_ImplOpenGL3_Init(glsl_version);
-    //ImGui::StyleColorsDark();
-
-    //bool show_demo_window = true;
-    //bool show_another_window = false;
-    //ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
    
-    
-
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
     {
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
-
-
-        //models[ModelShapes::TRIANGLE]->ApplyTransformation(transformationTriangle);
-        //models[ModelShapes::TRIANGLE]->Render();
-        //squareModel->ApplyTransformation(transformationSquare);
-        //squareModel->Render();
-        //circleModel->ApplyTransformation(transformationCircle);
-        //circleModel->Render();*/
-        /*ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();*/
 
         shaperender.Render();
      

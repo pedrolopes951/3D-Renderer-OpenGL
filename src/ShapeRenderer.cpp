@@ -5,9 +5,9 @@
 
 
 
-ShapeRenderer::ShapeRenderer(GLFWwindow* window, std::map<ModelShapes, std::shared_ptr<IModel>>& models, const glm::mat4& orthomatrix) : m_window{window}, m_models_available{models}
+ShapeRenderer::ShapeRenderer(GLFWwindow* window, std::map<ModelShapes, std::shared_ptr<IModel>>& models) : m_window{window}, m_models_available{models}
 {
-    this->InitTransformationMatrices(orthomatrix);
+    this->InitTransformationMatrices();
     const char* glsl_version = "#version 130";
     ImGui::CreateContext();
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
@@ -72,9 +72,9 @@ void ShapeRenderer::RenderImGuiWindow()
 
 
     // Which axis to translate the offset
-    ImGui::SliderFloat("Translation OffsetX", (float*)&m_translation.x, 0.0f, 960.0f);
-    ImGui::SliderFloat("Translation OffsetY", (float*)&m_translation.y, 0.0f, 540.0f);
-    ImGui::SliderFloat("Translation OffsetZ", (float*)&m_translation.z, 0.0f, 0.0f);
+    ImGui::SliderFloat3("Translation OffsetX", (float*)&m_translation.x, 0.0f, 960.0f);
+    /*ImGui::SliderFloat("Translation OffsetY", (float*)&m_translation.y, 0.0f, 540.0f);
+    ImGui::SliderFloat("Translation OffsetZ", (float*)&m_translation.z, 0.0f, 0.0f);*/
 
     // Which Coordinate to scale it
     ImGui::SliderFloat("Scales X", (float*)&m_scaling.x, 1.0f, 3.0f);
@@ -97,17 +97,12 @@ void ShapeRenderer::RenderImGuiWindow()
     ImGui::End();
 }
 
-void ShapeRenderer::InitTransformationMatrices(const glm::mat4& orthomatrix)
+void ShapeRenderer::InitTransformationMatrices()
 {
     // Add transformation matrices available
     m_transformation_matrices[ModelShapes::TRIANGLE] = Transformation();
     m_transformation_matrices[ModelShapes::SQUARE] = Transformation();
     m_transformation_matrices[ModelShapes::CIRCLE] = Transformation();
-
-    for (auto& i : m_transformation_matrices)
-    {
-        i.second.Ortho(orthomatrix);
-    }
 
        
 }

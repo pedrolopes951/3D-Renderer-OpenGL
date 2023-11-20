@@ -3,15 +3,17 @@
 // glm::translate, glm::rotate, glm::scale
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 
 #include <glm/gtx/string_cast.hpp>
+#include "Constants.h"
 
 class Transformation
 {
 public:
     Transformation();
-    Transformation(const Transformation& other) { m_modelMatrix = other.m_modelMatrix; };
+    Transformation(const Transformation& other) { m_modelMatrix = other.m_modelMatrix; m_indentyMatrix = other.m_indentyMatrix; m_projection = other.m_projection; };
     ~Transformation();
     void Translate(float x, float y, float z);
 
@@ -29,6 +31,8 @@ public:
 
 private:
     glm::mat4 m_modelMatrix;
+    glm::mat4 m_indentyMatrix;
+    glm::mat4 m_projection;
 
 };
 

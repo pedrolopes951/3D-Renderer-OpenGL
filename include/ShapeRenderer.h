@@ -19,7 +19,7 @@
 class ShapeRenderer
 {
 public:
-    ShapeRenderer(GLFWwindow* window, std::map<ModelShapes, std::shared_ptr<IModel>>& models,const glm::mat4& orthomatrix);
+    ShapeRenderer(GLFWwindow* window, std::map<ModelShapes, std::shared_ptr<IModel>>& models);
     ~ShapeRenderer();
     void Render();
 
@@ -28,7 +28,7 @@ private:
 
     void RenderImGuiWindow();
 
-    void InitTransformationMatrices(const glm::mat4& orthomatrix);
+    void InitTransformationMatrices();
 
     int m_selected_shape = 0;
     glm::vec4 m_rotationAngle = { 0.f ,0.f,0.f,0.f };
