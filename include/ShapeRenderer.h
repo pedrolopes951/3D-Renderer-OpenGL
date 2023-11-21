@@ -31,7 +31,7 @@ private:
     void InitTransformationMatrices();
 
     int m_selected_shape = 0;
-    glm::vec4 m_rotationAngle = { 0.f ,0.f,0.f,0.f };
+    glm::vec3 m_rotationAngle = { 0.f ,0.f,0.f};
     glm::vec3 m_translation{0.f,0.f,0.f};
     glm::vec3 m_scaling{ 1.f,1.f,0.f };
 

@@ -3,7 +3,7 @@
 
 
 
-Transformation::Transformation() : m_projection{ glm::ortho(0.0f, WINDOWWIDTH, 0.0f, WINDOWHEIGHT) }, m_indentyMatrix{glm::mat4(1.0f)}
+Transformation::Transformation() : m_modelMatrix{}, m_projection{glm::ortho(0.0f, WINDOWWIDTH, 0.0f, WINDOWHEIGHT)}, m_indentyMatrix{glm::mat4(1.0f)}
 {
 }
 
@@ -12,7 +12,7 @@ Transformation::~Transformation()
 }
 
 void Transformation::Translate(float x, float y, float z) {
-    m_modelMatrix = glm::translate(m_indentyMatrix, glm::vec3(x, y, z));
+    m_modelMatrix = glm::translate(m_indentyMatrix, glm::vec3(200.f, 200.f, z));
 }
 
 void  Transformation::Rotate(float angle, float x, float y, float z) {

@@ -72,23 +72,22 @@ void ShapeRenderer::RenderImGuiWindow()
 
 
     // Which axis to translate the offset
-    ImGui::SliderFloat3("Translation OffsetX", (float*)&m_translation.x, 0.0f, 960.0f);
-    /*ImGui::SliderFloat("Translation OffsetY", (float*)&m_translation.y, 0.0f, 540.0f);
-    ImGui::SliderFloat("Translation OffsetZ", (float*)&m_translation.z, 0.0f, 0.0f);*/
+    ImGui::SliderFloat3("Translation OffsetX", &m_translation.x, 0.0f, 960.0f);
+    //imgui::sliderfloat("translation offsety", (float*)&m_translation.y, 0.0f, 540.0f);
+    //imgui::sliderfloat("translation offsetz", (float*)&m_translation.z, 0.0f, 0.0f);
 
     // Which Coordinate to scale it
-    ImGui::SliderFloat("Scales X", (float*)&m_scaling.x, 1.0f, 3.0f);
-    ImGui::SliderFloat("Scales Y", (float*)&m_scaling.y, 1.0f, 3.0f);
-    ImGui::SliderFloat("Scales Z", (float*)&m_scaling.z, 1.0f, 3.0f);
+    ImGui::SliderFloat3("Scales X", &m_scaling.x, 1.0f, 3.0f);
+
 
     // Apply alll input to transformation matrices
     for (auto& trans : m_transformation_matrices)
     {
-        trans.second.Rotate(m_rotationAngle.x, 1.0, 0.0, 0.0);
+       /* trans.second.Rotate(m_rotationAngle.x, 1.0, 0.0, 0.0);
         trans.second.Rotate(m_rotationAngle.y, 0.0, 1.0, 0.0);
         trans.second.Rotate(m_rotationAngle.z, 0.0, 0.0, 1.0);
 
-        trans.second.Scale(m_scaling.x, m_scaling.y, m_scaling.z);
+        trans.second.Scale(m_scaling.x, m_scaling.y, m_scaling.z);*/
 
         trans.second.Translate(m_translation.x, m_translation.y, m_translation.z);
 
