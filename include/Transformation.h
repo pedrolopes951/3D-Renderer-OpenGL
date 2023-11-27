@@ -13,7 +13,7 @@ class Transformation
 {
 public:
     Transformation();
-    Transformation(const Transformation& other) { m_modelMatrix = other.m_modelMatrix; m_indentyMatrix = other.m_indentyMatrix; m_projection = other.m_projection; };
+    Transformation(const Transformation& other) { m_modelMatrixTranslation = other.m_modelMatrixTranslation; m_modelMatrixScaling = other.m_modelMatrixScaling; m_modelMatrixRotation = other.m_modelMatrixRotation; m_indentyMatrix = other.m_indentyMatrix; m_projection = other.m_projection; };
     ~Transformation();
     void Translate(float x, float y, float z);
 
@@ -24,13 +24,14 @@ public:
     // This will multiply to place the model between the boundaries of the orthographic matrix so in a algebric perpective is just putting this in a normalized field
     void Ortho(float left, float right, float bottom, float top);
 
-    void Ortho(const glm::mat4& orthmatrix);
 
     const glm::mat4& GetModelMatrix()const; 
 
 
 private:
-    glm::mat4 m_modelMatrix;
+    glm::mat4 m_modelMatrixTranslation;
+    glm::mat4 m_modelMatrixScaling;
+    glm::mat4 m_modelMatrixRotation;
     glm::mat4 m_indentyMatrix;
     glm::mat4 m_projection;
 

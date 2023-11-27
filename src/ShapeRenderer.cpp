@@ -34,6 +34,7 @@ void ShapeRenderer::Render()
     switch (m_selected_shape)
     {
     case ModelShapes::TRIANGLE:
+
         m_models_available[ModelShapes::TRIANGLE]->ApplyTransformation(m_transformation_matrices[ModelShapes::TRIANGLE]);
         m_models_available[ModelShapes::TRIANGLE]->Render();
         break;
@@ -65,31 +66,32 @@ void ShapeRenderer::RenderImGuiWindow()
     const char* shapes[] = { "Triangle", "Square","Circle" };
     ImGui::Combo("Selected Shape", &m_selected_shape, shapes, IM_ARRAYSIZE(shapes));
 
-    // Add which axis to rotate from
-    ImGui::SliderFloat("Rotation AngleX", &m_rotationAngle.x, 0.f, 360.f);
-    ImGui::SliderFloat("Rotation AngleY", &m_rotationAngle.y, 0.f, 360.f);
-    ImGui::SliderFloat("Rotation AngleZ", &m_rotationAngle.z, 0.f, 360.f);
 
-
-    // Which axis to translate the offset
-    ImGui::SliderFloat3("Translation OffsetX", &m_translation.x, 0.0f, 960.0f);
-    //imgui::sliderfloat("translation offsety", (float*)&m_translation.y, 0.0f, 540.0f);
-    //imgui::sliderfloat("translation offsetz", (float*)&m_translation.z, 0.0f, 0.0f);
-
-    // Which Coordinate to scale it
-    ImGui::SliderFloat3("Scales X", &m_scaling.x, 1.0f, 3.0f);
-
-
-    // Apply alll input to transformation matrices
-    for (auto& trans : m_transformation_matrices)
+    if (m_selected_shape == ModelShapes::TRIANGLE || m_selected_shape == ModelShapes::SQUARE || m_selected_shape == ModelShapes::CIRCLE)
     {
-       /* trans.second.Rotate(m_rotationAngle.x, 1.0, 0.0, 0.0);
-        trans.second.Rotate(m_rotationAngle.y, 0.0, 1.0, 0.0);
-        trans.second.Rotate(m_rotationAngle.z, 0.0, 0.0, 1.0);
 
-        trans.second.Scale(m_scaling.x, m_scaling.y, m_scaling.z);*/
+        // Add which axis to rotate from
+        ImGui::SliderFloat2("Rotation Angle", &m_rotationAngle.x, 0.f, 360.f);
 
-        trans.second.Translate(m_translation.x, m_translation.y, m_translation.z);
+        // Which axis to translate the offset
+        ImGui::SliderFloat2("Translation Offset", &m_translation.x, 0.0f, 960.0f);
+
+
+        // Which Coordinate to scale it
+        ImGui::SliderFloat2("Scales X", &m_scaling.x, 1.0f, 3.0f);
+
+        //// Apply alll input to transformation matrices
+        for (auto& trans : m_transformation_matrices)
+        {
+            trans.second.Rotate(m_rotationAngle.x, 1.0, 0.0, 0.0);
+            trans.second.Rotate(m_rotationAngle.y, 0.0, 1.0, 0.0);
+            trans.second.Rotate(m_rotationAngle.z, 0.0, 0.0, 1.0);
+
+            trans.second.Translate(m_translation.x, m_translation.y, m_translation.z);
+
+            trans.second.Scale(m_scaling.x, m_scaling.y, m_scaling.z);
+
+        }
 
     }
 
