@@ -170,3 +170,20 @@ void Circle::ApplyTransformation(const Transformation& transformation)
     unsigned int transformLoc = GLCall(glGetUniformLocation(m_shader.getID(), "u_Transform"));
     GLCall(glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transformation.GetModelMatrix())));
 }
+
+
+Piramid::Piramid(const std::vector<Vertex3D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices) : m_vb{ vertex }, m_eb{ eb }, m_layout{}, m_va{}, m_shader{ "shaders/Basic.shader" }
+{
+}
+
+Piramid::~Piramid()
+{
+}
+
+void Piramid::Render()
+{
+}
+
+void Piramid::ApplyTransformation(const Transformation& transformation)
+{
+}

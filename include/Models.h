@@ -65,7 +65,24 @@ private:
     Shader m_shader;
     Transformation m_transformation;
 
-    
+
+};
+
+class Piramid : public IModel
+{
+public:
+    Piramid(const std::vector<Vertex3D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices);
+    ~Piramid();
+    void Render() override;
+    void ApplyTransformation(const Transformation& transformation)override;
+
+private:
+    VertexArray<Vertex3D> m_va;
+    VertexBuffer<Vertex3D> m_vb;
+    VertexBufferLayout m_layout;
+    ElementBuffer m_eb;
+    Shader m_shader;
+    Transformation m_transformation;
 
 
 };

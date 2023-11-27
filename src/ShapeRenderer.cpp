@@ -71,7 +71,7 @@ void ShapeRenderer::RenderImGuiWindow()
     {
 
         // Add which axis to rotate from
-        ImGui::SliderFloat2("Rotation Angle", &m_rotationAngle.x, 0.f, 360.f);
+        ImGui::SliderFloat3("Rotation Angle", &m_rotationAngle.x, 0.f, 360.f);
 
         // Which axis to translate the offset
         ImGui::SliderFloat2("Translation Offset", &m_translation.x, 0.0f, 960.0f);
