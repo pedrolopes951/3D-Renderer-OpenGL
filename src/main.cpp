@@ -210,6 +210,15 @@ static  std::map<ModelShapes, std::shared_ptr<IModel>> InitModels()
         circle.push_back(Vertex2D(x, y));
     }
 
+    // Vertices Coordinates
+    std::vector<Vertex3D> piramid=
+    {
+        // Coordinates
+        Vertex3D(-50.0f,0.f,50.0f),    // Lower left corner
+        Vertex3D(-50.f,50.f,0.0f),    // Upper left corner
+        Vertex3D(50.f,50.f,0.0f),    // Upper right corner
+        Vertex3D(50.f,-50.f,0.0f)   // Lower right corner
+    };
 
 
     // indices
@@ -224,6 +233,17 @@ static  std::map<ModelShapes, std::shared_ptr<IModel>> InitModels()
     for (int i = 0; i <= numSegment; i++) {
         indicesC.push_back(i);
     }
+
+    // Piramid
+    std::vector<unsigned int> indicesPiramid =
+    {
+        0,1,2,
+        0,2,3,
+        0,1,4,
+        1,2,4,
+        2,3,4,
+        3,0,4
+    };
 
     // Some Basic Math Operations
    // OperationsGlMath();
