@@ -16,3 +16,8 @@ std::unique_ptr<IModel> CircleFactory::Create2DModel(const std::vector<Vertex2D>
 {
     return std::make_unique<Circle>(vertex,eb,typeVertices);
 }
+
+std::unique_ptr<IModel> PiramidFactory::Create3DModel(const std::vector<Vertex3D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)
+{
+    return std::make_unique<Piramid>(vertex,eb,typeVertices);
+}

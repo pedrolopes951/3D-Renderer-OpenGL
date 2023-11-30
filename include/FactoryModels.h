@@ -39,3 +39,15 @@ public:
 private:
 
 };
+class PiramidFactory : public IModelFactory
+{
+public:
+    PiramidFactory() {
+        std::cout << "Circle Created" << std::endl;
+    };
+    ~PiramidFactory() {};
+    std::unique_ptr<IModel> Create3DModel(const std::vector<Vertex3D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)  override;
+
+private:
+
+};

@@ -10,5 +10,7 @@ enum ModelShapes
 {
     TRIANGLE,
     SQUARE,
-    CIRCLE
+    CIRCLE,
+    PIRAMID,
+    CUBE
 };

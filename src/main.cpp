@@ -169,6 +169,8 @@ static  std::map<ModelShapes, std::shared_ptr<IModel>> InitModels()
     std::shared_ptr<IModelFactory> triangleFactory = std::make_shared<TriangleFactory>();
     std::shared_ptr<IModelFactory> squareFactory = std::make_shared<SquareFactory>();
     std::shared_ptr<IModelFactory> circleFactory = std::make_shared<CircleFactory>();
+    std::shared_ptr<IModelFactory> piramidFactory = std::make_shared<PiramidFactory>();
+
 
 
     std::vector<Vertex2D> triangle =
@@ -215,9 +217,11 @@ static  std::map<ModelShapes, std::shared_ptr<IModel>> InitModels()
     {
         // Coordinates
         Vertex3D(-50.0f,0.f,50.0f),    // Lower left corner
-        Vertex3D(-50.f,50.f,0.0f),    // Upper left corner
-        Vertex3D(50.f,50.f,0.0f),    // Upper right corner
-        Vertex3D(50.f,-50.f,0.0f)   // Lower right corner
+        Vertex3D(-50.f,0.f,-50.0f),    // Upper left corner
+        Vertex3D(50.f,0.f,-50.0f),    // Upper right corner
+        Vertex3D(50.f,0.f,50.f),   // Lower right corner
+        Vertex3D(0.0,80.f,0.0f)     // Upper Corner
+
     };
 
 
@@ -252,7 +256,7 @@ static  std::map<ModelShapes, std::shared_ptr<IModel>> InitModels()
     //MatrixOperations();
 
 
-    return  std::map<ModelShapes, std::shared_ptr<IModel>>{{ModelShapes::TRIANGLE, triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D) }, { ModelShapes::SQUARE, squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D)}, { ModelShapes::CIRCLE,circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D) }};
+    return  std::map<ModelShapes, std::shared_ptr<IModel>>{{ModelShapes::TRIANGLE, triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D) }, { ModelShapes::SQUARE, squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D) }, { ModelShapes::CIRCLE,circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D) }, { ModelShapes::PIRAMID,piramidFactory->Create3DModel(piramid,indicesPiramid,GLType::VERTEX3D) }};
 
 }
 
