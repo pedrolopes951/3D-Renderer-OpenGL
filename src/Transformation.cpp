@@ -16,7 +16,8 @@ void Transformation::Translate(float x, float y, float z) {
 }
 
 void  Transformation::Rotate(float angle, float x, float y, float z) {
-    m_modelMatrixRotation =  glm::rotate(m_indentyMatrix, glm::radians(angle), glm::vec3(x, y, z));
+    // m_rotationangle += 0.5f;
+    m_modelMatrixRotation =  glm::rotate(m_indentyMatrix, glm::radians(m_rotationangle), glm::vec3(x, 1.0f, z));
 }
 
 void  Transformation::Scale(float x, float y, float z) {
@@ -25,6 +26,9 @@ void  Transformation::Scale(float x, float y, float z) {
 
 void Transformation::Ortho(float left, float right, float bottom, float top)
 {
+    // 3 D
+    //m_projection = glm::perspective(glm::radians(45.0f), (float)WINDOWWIDTH / WINDOWHEIGHT, 0.1f, 100.f);
+
     m_projection = glm::ortho(left, right, bottom, top);
 
 }
@@ -32,5 +36,5 @@ void Transformation::Ortho(float left, float right, float bottom, float top)
 
 
 const glm::mat4& Transformation::GetModelMatrix() const {
-    return m_projection * m_modelMatrixRotation *m_modelMatrixTranslation * m_modelMatrixScaling;
+    return m_projection *m_modelMatrixTranslation * m_modelMatrixRotation* m_modelMatrixScaling;
 }

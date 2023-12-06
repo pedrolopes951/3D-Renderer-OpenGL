@@ -15,6 +15,7 @@ public:
     Transformation();
     Transformation(const Transformation& other) { m_modelMatrixTranslation = other.m_modelMatrixTranslation; m_modelMatrixScaling = other.m_modelMatrixScaling; m_modelMatrixRotation = other.m_modelMatrixRotation; m_indentyMatrix = other.m_indentyMatrix; m_projection = other.m_projection; };
     ~Transformation();
+
     void Translate(float x, float y, float z);
 
     void Rotate(float angle, float x, float y, float z);
@@ -34,6 +35,8 @@ private:
     glm::mat4 m_modelMatrixRotation;
     glm::mat4 m_indentyMatrix;
     glm::mat4 m_projection;
+
+    float m_rotationangle{ 0.f };
 
 };
 

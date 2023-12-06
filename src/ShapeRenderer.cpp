@@ -46,6 +46,10 @@ void ShapeRenderer::Render()
         m_models_available[ModelShapes::CIRCLE]->ApplyTransformation(m_transformation_matrices[ModelShapes::CIRCLE]);
         m_models_available[ModelShapes::CIRCLE]->Render();
         break;
+    case ModelShapes::PIRAMID:
+        m_models_available[ModelShapes::PIRAMID]->ApplyTransformation(m_transformation_matrices[ModelShapes::PIRAMID]);
+        m_models_available[ModelShapes::PIRAMID]->Render();
+        break;
     default:
         std::cerr << "Not available model for rendering" << std::endl;
         throw("Not available model for rendering");
@@ -63,11 +67,11 @@ void ShapeRenderer::RenderImGuiWindow()
 
     ImGui::Text("Select a shape to render:");
 
-    const char* shapes[] = { "Triangle", "Square","Circle" };
+    const char* shapes[] = { "Triangle", "Square","Circle","Piramid"};
     ImGui::Combo("Selected Shape", &m_selected_shape, shapes, IM_ARRAYSIZE(shapes));
 
 
-    if (m_selected_shape == ModelShapes::TRIANGLE || m_selected_shape == ModelShapes::SQUARE || m_selected_shape == ModelShapes::CIRCLE)
+    if (m_selected_shape == ModelShapes::TRIANGLE || m_selected_shape == ModelShapes::SQUARE || m_selected_shape == ModelShapes::CIRCLE || m_selected_shape == ModelShapes::PIRAMID)
     {
 
         // Add which axis to rotate from
@@ -104,6 +108,8 @@ void ShapeRenderer::InitTransformationMatrices()
     m_transformation_matrices[ModelShapes::TRIANGLE] = Transformation();
     m_transformation_matrices[ModelShapes::SQUARE] = Transformation();
     m_transformation_matrices[ModelShapes::CIRCLE] = Transformation();
+    m_transformation_matrices[ModelShapes::PIRAMID] = Transformation();
+
 
        
 }

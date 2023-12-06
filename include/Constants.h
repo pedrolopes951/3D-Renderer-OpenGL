@@ -12,5 +12,8 @@ enum ModelShapes
     SQUARE,
     CIRCLE,
     PIRAMID,
-    CUBE
+    CUBE,
+    SHEPERE
 };
+
+
