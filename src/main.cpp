@@ -3,41 +3,23 @@
 #include <cmath>
 #include <map>
 
-// Include GLEW
-#include <GL/glew.h>
-
-// Include GLFW
-#include <GLFW/glfw3.h>
-
 #include "Shader.h"
 #include "FactoryModels.h"
 #include "Models.h"
 #include "ShapeRenderer.h"
-
-#include <glm/glm.hpp>
-// glm::translate, glm::rotate, glm::scale
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/string_cast.hpp>
-
-
-// glm::translate, glm::rotate, gl
-// GUI
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
-
 
 #include "Constants.h"
 
 // Vertex Shader source
 static const char* vertexShaderSourceTest = R"(
     #version 330 core
-    layout(location = 0) in vec3 aPos;
-    uniform mat4 u_Transform;
+    layout (location = 0) in vec3 aPos;
+
+    uniform mat4 transformation;
+
     void main()
     {
-        gl_Position = u_Transform * vec4(aPos, 1.0);
+	    gl_Position = transformation * vec4(aPos, 1.0f);
     }
 )";
 
@@ -88,7 +70,6 @@ static void OperationsGlMath()
 
 }
 
-
 static void MatrixOperations()
 {
     // Create a vertex, w=1 means we have a position but if w= 0 is a vector
@@ -129,12 +110,15 @@ static void MatrixOperations()
     std::cout << "\n" << "our vertex in world space\n";
     std::cout << glm::to_string(worldspace_vertex) << std::endl;
 
-
-
-
-
-
 }
+
+static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    // make sure the viewport matches the new window dimensions; note that width and 
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
+}
+
 
 static GLFWwindow* InitWindow()
 {
@@ -149,10 +133,9 @@ static GLFWwindow* InitWindow()
         return nullptr;
     }
 
-    glfwWindowHint(GLFW_SAMPLES, 4);// 4x times the antialiasing 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Use the core-profile instead of old immediate openGl version 
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Open a window and create its OpenGL context
     GLFWwindow* window = glfwCreateWindow((int)WINDOWWIDTH, (int)WINDOWHEIGHT, "Tutorial 02 - Red triangle", NULL, NULL);
@@ -164,7 +147,9 @@ static GLFWwindow* InitWindow()
 
     }
     glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+    
     // Initialize GLEW
     glewExperimental = true; // Needed for core profile
     if (glewInit() != GLEW_OK) {
@@ -180,6 +165,8 @@ static GLFWwindow* InitWindow()
     //// Ensure we can capture the escape key being pressed below
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
+    // Set up OpenGL
+    glEnable(GL_DEPTH_TEST);
 
     return window;
 }
@@ -234,17 +221,35 @@ static  std::map<ModelShapes, std::shared_ptr<IModel>> InitModels()
         circle.push_back(Vertex2D(x, y));
     }
 
-    // Vertices Coordinates
-    std::vector<Vertex3D> piramid=
-    {
-        // Coordinates
-        Vertex3D(-50.0f,0.f,50.0f),    // Lower left corner
-        Vertex3D(-50.f,0.f,-50.0f),    // Upper left corner
-        Vertex3D(50.f,0.f,-50.0f),    // Upper right corner
-        Vertex3D(50.f,0.f,50.f),   // Lower right corner
-        Vertex3D(0.0,80.f,0.0f)     // Upper Corner
+    std::vector<Vertex3D> piramid = {
+        // Base
+       { -0.5f, -0.5f, -0.5f },
+       {  0.5f, -0.5f, -0.5f },
+       {  0.5f, -0.5f,  0.5f },
+       { -0.5f, -0.5f,  0.5f },
 
+       // Front face
+       {  0.0f,  0.5f,  0.0f },
+       { -0.5f, -0.5f,  0.5f },
+       {  0.5f, -0.5f,  0.5f },
+
+       // Right face
+       {  0.0f,  0.5f,  0.0f },
+       {  0.5f, -0.5f,  0.5f },
+       {  0.5f, -0.5f, -0.5f },
+
+       // Back face
+       {  0.0f,  0.5f,  0.0f },
+       {  0.5f, -0.5f, -0.5f },
+       { -0.5f, -0.5f, -0.5f },
+
+       // Left face
+       {  0.0f,  0.5f,  0.0f },
+       { -0.5f, -0.5f, -0.5f },
+       { -0.5f, -0.5f,  0.5f }
     };
+
+ 
 
 
     // indices
@@ -260,21 +265,20 @@ static  std::map<ModelShapes, std::shared_ptr<IModel>> InitModels()
         indicesC.push_back(i);
     }
 
-    // Piramid
-    std::vector<unsigned int> indicesPiramid =
-    {
-        0,1,2,
-        0,2,3,
-        0,1,4,
-        1,2,4,
-        2,3,4,
-        3,0,4
+    std::vector<unsigned int> indicesPiramid = {
+       0, 1, 2,
+       0, 2, 3,
+       4, 5, 6,
+       7, 8, 9,
+       10, 11, 12,
+       13, 14, 15
     };
 
 
 
 
-    return  std::map<ModelShapes, std::shared_ptr<IModel>>{{ModelShapes::TRIANGLE, triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D) }, { ModelShapes::SQUARE, squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D) }, { ModelShapes::CIRCLE,circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D) }, { ModelShapes::PIRAMID,piramidFactory->Create3DModel(piramid,indicesPiramid,GLType::VERTEX3D) }};
+
+    return  std::map<ModelShapes, std::shared_ptr<IModel>>{/*{ModelShapes::TRIANGLE, triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D) }, { ModelShapes::SQUARE, squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D) }, { ModelShapes::CIRCLE,circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D) },*/ { ModelShapes::PIRAMID,piramidFactory->Create3DModel(piramid,indicesPiramid,GLType::VERTEX3D) }};
 
 }
 
@@ -325,64 +329,55 @@ static GLuint createShaderProgram() {
 
     return shaderProgram;
 }
+
+
 static void TesttheFuckingPiramid()
 {
-    //GLFWwindow* window = InitWindow();
+   
 
 
+    std::vector<Vertex3D> vertices = {
+        // Base
+        { -0.5f, -0.5f, -0.5f },
+        {  0.5f, -0.5f, -0.5f },
+        {  0.5f, -0.5f,  0.5f },
+        { -0.5f, -0.5f,  0.5f },
 
-    // Vertices Coordinates
-    std::vector<Vertex3D> pyramidVertices =
-    {
-        // Coordinates
-       {-50.0f,0.f,50.0f},    // Lower left corner
-       {-50.f,0.f,-50.0f},    // Upper left corner
-       {50.f,0.f,-50.0f},    // Upper right corner
-       {50.f,0.f,50.f},   // Lower right corner
-       {0.0,80.f,0.0f}     // Upper Corner
+        // Front face
+        {  0.0f,  0.5f,  0.0f },
+        { -0.5f, -0.5f,  0.5f },
+        {  0.5f, -0.5f,  0.5f },
 
+        // Right face
+        {  0.0f,  0.5f,  0.0f },
+        {  0.5f, -0.5f,  0.5f },
+        {  0.5f, -0.5f, -0.5f },
+
+        // Back face
+        {  0.0f,  0.5f,  0.0f },
+        {  0.5f, -0.5f, -0.5f },
+        { -0.5f, -0.5f, -0.5f },
+
+        // Left face
+        {  0.0f,  0.5f,  0.0f },
+        { -0.5f, -0.5f, -0.5f },
+        { -0.5f, -0.5f,  0.5f }
     };
 
-    // Piramid
-    std::vector<unsigned int> pyramidIndices =
-    {
-        0,1,2,
-        0,2,3,
-        0,1,4,
-        1,2,4,
-        2,3,4,
-        3,0,4
+    std::vector<unsigned int> indices = {
+        0, 1, 2,
+        0, 2, 3,
+        4, 5, 6,
+        7, 8, 9,
+        10, 11, 12,
+        13, 14, 15
     };
 
-    // Initialize GLFW and GLEW
-    if (!glfwInit()) {
-        std::cerr << "Failed to initialize GLFW" << std::endl;
-        return;
-    }
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Pyramid Example", NULL, NULL);
-    if (!window) {
-        std::cerr << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return;
-    }
-
-    glfwMakeContextCurrent(window);
-    glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK) {
-        std::cerr << "Failed to initialize GLEW" << std::endl;
-        return;
-    }
-
+    GLFWwindow* window = InitWindow();
     
-    // Set up OpenGL
-    glEnable(GL_DEPTH_TEST);
 
     // Set up vertex array and buffer
-    GLuint VAO, VBO, EBO;
+    unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -390,13 +385,13 @@ static void TesttheFuckingPiramid()
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex3D) * pyramidVertices.size(), pyramidVertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex3D), vertices.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * pyramidIndices.size(), pyramidIndices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
-    // Position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void*)0);
     glEnableVertexAttribArray(0);
 
     // Shader program
@@ -405,28 +400,30 @@ static void TesttheFuckingPiramid()
 
     // Render loop
     while (!glfwWindowShouldClose(window)) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        // ------
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // also clear the depth buffer now!
 
-        // Update uniform
-        glm::mat4 model = glm::mat4(1.0f);
+        // create transformations
+        glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         glm::mat4 view = glm::mat4(1.0f);
-        glm::mat4 proj = glm::mat4(1.0f);
+        glm::mat4 projection = glm::mat4(1.0f);
+        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        projection = glm::perspective(glm::radians(45.0f), (float)WINDOWHEIGHT / (float)WINDOWWIDTH, 0.1f, 100.0f);
+
+        glm::mat4 transformation = projection * view * model;
 
 
-        view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f));
-        proj = glm::perspective(glm::radians(45.0f), (float)(800 / 600), 0.1f, 100.0f);
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"transformation"), 1, GL_FALSE, &transformation[0][0]);
 
 
-        model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));  // Rotate
-
-        glm::mat4 transformation = proj * view * model;
-        int transloc = glGetUniformLocation(shaderProgram, "u_Transform");
-        glUniformMatrix4fv(transloc, 1, GL_FALSE, glm::value_ptr(transformation));
-
-        // Draw pyramid
+        // render pyramid
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, pyramidIndices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
 
+        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+        // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -438,38 +435,160 @@ static void TesttheFuckingPiramid()
     glfwTerminate();
 }
 
+static void myImplementation()
+{
+    GLFWwindow* window = InitWindow();
+    if (!window)
+        return;
+
+   auto models = InitModels();
+
+   ShapeRenderer shaperender(window, models);
+
+    std::vector<Vertex3D> vertices = {
+        // Base
+       { -0.5f, -0.5f, -0.5f },
+       {  0.5f, -0.5f, -0.5f },
+       {  0.5f, -0.5f,  0.5f },
+       { -0.5f, -0.5f,  0.5f },
+
+       // Front face
+       {  0.0f,  0.5f,  0.0f },
+       { -0.5f, -0.5f,  0.5f },
+       {  0.5f, -0.5f,  0.5f },
+
+       // Right face
+       {  0.0f,  0.5f,  0.0f },
+       {  0.5f, -0.5f,  0.5f },
+       {  0.5f, -0.5f, -0.5f },
+
+       // Back face
+       {  0.0f,  0.5f,  0.0f },
+       {  0.5f, -0.5f, -0.5f },
+       { -0.5f, -0.5f, -0.5f },
+
+       // Left face
+       {  0.0f,  0.5f,  0.0f },
+       { -0.5f, -0.5f, -0.5f },
+       { -0.5f, -0.5f,  0.5f }
+    };
+
+    std::vector<unsigned int> indices = {
+       0, 1, 2,
+       0, 2, 3,
+       4, 5, 6,
+       7, 8, 9,
+       10, 11, 12,
+       13, 14, 15
+    };
+
+    // Set up vertex array and buffer
+    unsigned int VBO, VAO, EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex3D), vertices.data(), GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Shader program
+   /* GLuint shaderProgram = createShaderProgram();
+    glUseProgram(shaderProgram);*/
+
+    // VAO
+    VertexArray<Vertex3D> m_vao;
+    VertexBuffer<Vertex3D> m_vbo(vertices);
+    m_vao.Bind();
+    m_vbo.Bind();
+    ElementBuffer m_eb{indices};
+
+    VertexBufferLayout m_layout;
+
+    m_layout.AddVertex3D(3);
+    m_vao.AddBuffer(m_vbo, m_layout, GLType::VERTEX3D);
+
+
+
+    Shader shader("shaders/Basic.shader");
+    shader.Bind();
+    shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
+
+
+    while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
+    {
+        GLCall(glClearColor(0.2f, 0.3f, 0.3f, 1.0f));
+        GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+     
+        //shaperender.Render();
+
+        glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        glm::mat4 view = glm::mat4(1.0f);
+        glm::mat4 projection = glm::mat4(1.0f);
+        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        projection = glm::perspective(glm::radians(45.0f), (float)WINDOWHEIGHT / (float)WINDOWWIDTH, 0.1f, 100.0f);
+
+        glm::mat4 transformation_matrix = projection * view * model;
+
+        glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "transformation"), 1, GL_FALSE, &transformation_matrix[0][0]);
+
+
+        //glBindVertexArray(VAO);
+        m_vao.Bind();
+        glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
+
+
+     
+        GLCall(glfwSwapBuffers(window)); // wap the color buffer (a large 2D buffer that contains color values for each pixel in GLFW's window) that is used to render to during this render iteration and show it as output to the screen.
+        GLCall(glfwPollEvents());
+
+        //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // also clear the depth buffer now!
+
+        //// create transformations
+        //glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        //glm::mat4 view = glm::mat4(1.0f);
+        //glm::mat4 projection = glm::mat4(1.0f);
+        //model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
+        //view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        //projection = glm::perspective(glm::radians(45.0f), (float)WINDOWHEIGHT / (float)WINDOWWIDTH, 0.1f, 100.0f);
+
+        //glm::mat4 transformation = projection * view * model;
+
+        //glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "transformation"), 1, GL_FALSE, &transformation[0][0]);
+
+
+        //// render pyramid
+        //glBindVertexArray(VAO);
+        //glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
+
+        //// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+        //// -------------------------------------------------------------------------------
+        //glfwSwapBuffers(window);
+        //glfwPollEvents();
+    }
+    /*ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();*/
+    // Cleans up all the resources before it closes window
+    GLCall(glfwTerminate());
+}
+
 int main(void)
 {
-    //GLFWwindow* window = InitWindow();
-    //if (!window)
-    //    return -1;
-
-    //auto models = InitModels();
-
-    //ShapeRenderer shaperender(window, models);
-    //
-    //while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
-    //{
-    //    GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-    //    // Disable face culling
-    //    GLCall(glDisable(GL_CULL_FACE));
-    //    GLCall(glEnable(GL_DEPTH_TEST));
+    myImplementation();
 
 
-
-    //    shaperender.Render();
-    // 
-    //    GLCall(glfwSwapBuffers(window)); // wap the color buffer (a large 2D buffer that contains color values for each pixel in GLFW's window) that is used to render to during this render iteration and show it as output to the screen.
-    //    GLCall(glfwPollEvents());
-    //}
-    //ImGui_ImplOpenGL3_Shutdown();
-    //ImGui_ImplGlfw_Shutdown();
-    //ImGui::DestroyContext();
-    //// Cleans up all the resources before it closes window
-    //GLCall(glfwTerminate());
-
-
-    TesttheFuckingPiramid();
+  // TesttheFuckingPiramid();
 
     return 0;
 }

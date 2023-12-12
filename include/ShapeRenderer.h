@@ -26,11 +26,21 @@ public:
 
 private:
 
+    enum Render
+    {
+        TWOD,
+        THREED
+    };
+    void Render3D();
+    void Render2D();
+
     void RenderImGuiWindow();
 
     void InitTransformationMatrices();
 
+
     int m_selected_shape = 0;
+    int m_render_option = 0;
     glm::vec3 m_rotationAngle = { 0.f ,0.f,0.f};
     glm::vec3 m_translation{0.f,0.f,0.f};
     glm::vec3 m_scaling{ 1.f,1.f,0.f };

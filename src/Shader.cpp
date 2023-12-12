@@ -16,7 +16,7 @@ Shader::Shader(const std::string& filepath)
 
     m_RendererID = CreateShader(source.VertexSource, source.FragmentSource);
 
-    GLCall(glUseProgram(m_RendererID));
+    //GLCall(glUseProgram(m_RendererID));
 }
 
 Shader::~Shader()
@@ -102,7 +102,7 @@ struct ShaderProgramSource Shader::ParseShader(const std::string& filepath)
 
 unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
 {
-    GLCall(unsigned int id = glCreateShader(type));
+    GLCall(GLuint id = glCreateShader(type));
     const char* src = source.c_str();
     GLCall(glShaderSource(id, 1, &src, nullptr));
     GLCall(glCompileShader(id));
@@ -133,7 +133,7 @@ unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
 unsigned int Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
 {
     // create a shader program
-    unsigned int program = glCreateProgram();
+    GLuint program = glCreateProgram();
     unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
     unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 

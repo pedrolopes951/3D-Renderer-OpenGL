@@ -8,11 +8,11 @@
 ShapeRenderer::ShapeRenderer(GLFWwindow* window, std::map<ModelShapes, std::shared_ptr<IModel>>& models) : m_window{window}, m_models_available{models}
 {
     this->InitTransformationMatrices();
-    const char* glsl_version = "#version 130";
+    /*const char* glsl_version = "#version 130";
     ImGui::CreateContext();
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
-    ImGui::StyleColorsDark();
+    ImGui::StyleColorsDark();*/
 
 }
 
@@ -22,18 +22,18 @@ ShapeRenderer::~ShapeRenderer()
 
 void ShapeRenderer::Render()
 {
-    ImGui_ImplOpenGL3_NewFrame();
+    /*ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
+    ImGui::NewFrame();*/
 
-    this->RenderImGuiWindow();
+    //this->RenderImGuiWindow();
 
     // Render the models and apply transformations
 
     // Apply transformation and render the selected model
-    switch (m_selected_shape)
-    {
-    case ModelShapes::TRIANGLE:
+    //switch (m_selected_shape)
+    //{
+    /*case ModelShapes::TRIANGLE:
 
         m_models_available[ModelShapes::TRIANGLE]->ApplyTransformation(m_transformation_matrices[ModelShapes::TRIANGLE]);
         m_models_available[ModelShapes::TRIANGLE]->Render();
@@ -45,33 +45,68 @@ void ShapeRenderer::Render()
     case ModelShapes::CIRCLE:
         m_models_available[ModelShapes::CIRCLE]->ApplyTransformation(m_transformation_matrices[ModelShapes::CIRCLE]);
         m_models_available[ModelShapes::CIRCLE]->Render();
-        break;
-    case ModelShapes::PIRAMID:
-        m_models_available[ModelShapes::PIRAMID]->ApplyTransformation(m_transformation_matrices[ModelShapes::PIRAMID]);
-        m_models_available[ModelShapes::PIRAMID]->Render();
-        break;
-    default:
-        std::cerr << "Not available model for rendering" << std::endl;
-        throw("Not available model for rendering");
-        break;
-    }
+        break;*/
+//    case ModelShapes::PIRAMID:
 
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+
+        m_models_available[ModelShapes::PIRAMID]->ApplyTransformation(m_transformation_matrices[ModelShapes::PIRAMID]);
+
+
+        //m_models_available[ModelShapes::PIRAMID]->Render();
+  //      m_selected_shape -= ModelShapes::ALL / 2;
+//        break;
+    //default:
+    //    std::cerr << "Not available model for rendering" << std::endl;
+    //    throw("Not available model for rendering");
+    //    break;
+    //}
+
+    /*ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
 }
 
 
-void ShapeRenderer::RenderImGuiWindow()
+void ShapeRenderer::Render3D()
 {
-    ImGui::Begin("Shape Selection and Operations");
+    const char* shapes3D[] = {"Piramid","Cube","Shepere"};
+    ImGui::Text("Select a shape to render:");
+    ImGui::Combo("Selected Shape", &(m_selected_shape), shapes3D, IM_ARRAYSIZE(shapes3D));
 
+    m_selected_shape += ModelShapes::ALL/2;
+
+    if (m_selected_shape == ModelShapes::PIRAMID)
+    {
+
+        // Add which axis to rotate from
+        //ImGui::SliderFloat3("Rotation Angle", &m_rotationAngle.x, 0.f, 360.f);
+
+        //// Which axis to translate the offset
+        //ImGui::SliderFloat2("Translation Offset", &m_translation.x, 0.0f, 960.0f);
+
+        //// Which Coordinate to scale it
+        //ImGui::SliderFloat2("Scales X", &m_scaling.x, 1.0f, 3.0f);
+
+
+        m_transformation_matrices[ModelShapes::PIRAMID].Rotate((float)glfwGetTime(), 0.0f, 1.0f, 0.0f);
+
+        m_transformation_matrices[ModelShapes::PIRAMID].View(0.0f, 0.0f, -3.0f);
+
+
+    }
+    
+
+}
+
+void ShapeRenderer::Render2D()
+{
     ImGui::Text("Select a shape to render:");
 
-    const char* shapes[] = { "Triangle", "Square","Circle","Piramid"};
-    ImGui::Combo("Selected Shape", &m_selected_shape, shapes, IM_ARRAYSIZE(shapes));
+    const char* shapes2D[] = { "Triangle", "Square","Circle"};
+    ImGui::Combo("Selected Shape", &m_selected_shape, shapes2D, IM_ARRAYSIZE(shapes2D));
 
 
-    if (m_selected_shape == ModelShapes::TRIANGLE || m_selected_shape == ModelShapes::SQUARE || m_selected_shape == ModelShapes::CIRCLE || m_selected_shape == ModelShapes::PIRAMID)
+    if (m_selected_shape == ModelShapes::TRIANGLE || m_selected_shape == ModelShapes::SQUARE || m_selected_shape == ModelShapes::CIRCLE)
     {
 
         // Add which axis to rotate from
@@ -97,6 +132,26 @@ void ShapeRenderer::RenderImGuiWindow()
 
         }
 
+    }
+
+}
+
+void ShapeRenderer::RenderImGuiWindow()
+{
+    ImGui::Begin("Shape Selection and Operations");
+
+    ImGui::Text("Select 2D or 3D shapes to render:");
+
+    const char* render_options[] = {"2D","3D"};
+    ImGui::Combo("Render", &m_render_option, render_options, IM_ARRAYSIZE(render_options));
+
+    if (m_render_option == ShapeRenderer::Render::TWOD)
+    {
+        this->Render2D();
+    }
+    else if (m_render_option == ShapeRenderer::Render::THREED)
+    {
+        this->Render3D();
     }
 
     ImGui::End();
