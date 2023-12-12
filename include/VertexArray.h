@@ -11,6 +11,7 @@ public:
     VertexArray()
     {
         GLCall(glGenVertexArrays(1, &m_RendererID));
+
     }
     ~VertexArray()
     {
@@ -20,8 +21,6 @@ public:
 
     void AddBuffer(const VertexBuffer<T>& vb, const VertexBufferLayout& layout, GLType type)
     {
-        //Bind(); // Performs operation in this VAO
-        //vb.Bind(); // Makes this VBO active for attribute data
         const std::vector<VertexBufferElement> elements = layout.GetElements();
         unsigned int offset = 0;
 

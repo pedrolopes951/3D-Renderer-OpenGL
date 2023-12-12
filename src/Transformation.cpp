@@ -3,7 +3,7 @@
 
 
 
-Transformation::Transformation() : m_modelMatrixTranslation{ glm::mat4(1.0f) }, m_modelMatrixScaling{ glm::mat4(1.0f) }, m_modelMatrixRotation{ glm::mat4(1.0f) }, m_view{glm::mat4(1.f)}, m_projectionOrtho{glm::ortho(0.0f, WINDOWWIDTH, 0.0f, WINDOWHEIGHT)}, m_projectionPerspective{glm::perspective(glm::radians(45.0f), WINDOWWIDTH/WINDOWHEIGHT,0.1f,100.f)}, m_indentyMatrix{glm::mat4(1.0f)}
+Transformation::Transformation() : m_modelMatrixTranslation{ glm::mat4(1.0f) }, m_modelMatrixScaling{ glm::mat4(1.0f) }, m_modelMatrixRotation{ glm::mat4(1.0f) }, m_view{glm::mat4(1.f)}, m_projectionOrtho{glm::ortho(0.0f, WINDOWWIDTH, 0.0f, WINDOWHEIGHT)}, m_projectionPerspective{ glm::perspective(glm::radians(FOV), (float)WINDOWHEIGHT / (float)WINDOWWIDTH, 0.1f, 100.0f) }, m_indentyMatrix{glm::mat4(1.0f)}
 {
 }
 
@@ -15,9 +15,21 @@ void Transformation::Translate(float x, float y, float z) {
     m_modelMatrixTranslation = glm::translate(m_indentyMatrix, glm::vec3(x, y, z)) ;
 }
 
-void  Transformation::Rotate(float angle, float x, float y, float z) {
+void  Transformation::Rotate(float angle, float x, float y, float z)
+{
+    if (x != 0.0f)
+    {
+        m_modelMatrixRotation =  glm::rotate(m_indentyMatrix, angle, glm::vec3(x, 0.0f, 0.0f));
+    }
+    else if (y != 0.0f)
+    {
+        m_modelMatrixRotation = glm::rotate(m_indentyMatrix, angle, glm::vec3(0.0f, y, 0.0f));
+    }
+    else if (z != 0.0f)
+    {
+        m_modelMatrixRotation = glm::rotate(m_indentyMatrix, angle, glm::vec3(0.0f, 0.0f, z));
+    }
 
-    m_modelMatrixRotation =  glm::rotate(m_indentyMatrix, glm::radians(angle), glm::vec3(x, y, z));
 }
 
 void  Transformation::Scale(float x, float y, float z) {
@@ -37,7 +49,10 @@ void Transformation::Perspective(float fov, float aspectRatio, float near, float
 
 void Transformation::View(float x, float y, float z)
 {
+
     m_view = glm::translate(m_indentyMatrix, glm::vec3(x, y, z));
+
+
 }
 
 const glm::mat4& Transformation::GetModelMatrix2D() const {
@@ -45,5 +60,12 @@ const glm::mat4& Transformation::GetModelMatrix2D() const {
 }
 
 const glm::mat4& Transformation::GetModelMatrix3D() const {
-    return m_projectionPerspective * m_view * m_modelMatrixTranslation * m_modelMatrixRotation * m_modelMatrixScaling;
+   //glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+   //glm::mat4 view = glm::mat4(1.0f);
+   //glm::mat4 projection = glm::mat4(1.0f);
+   //model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
+   //view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+   //projection = glm::perspective(glm::radians(45.0f), (float)WINDOWHEIGHT / (float)WINDOWWIDTH, 0.1f, 100.0f);
+   //return projection * view * model;
+   return m_projectionPerspective * m_view * m_modelMatrixRotation;
 }

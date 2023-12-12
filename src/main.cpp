@@ -278,7 +278,7 @@ static  std::map<ModelShapes, std::shared_ptr<IModel>> InitModels()
 
 
 
-    return  std::map<ModelShapes, std::shared_ptr<IModel>>{/*{ModelShapes::TRIANGLE, triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D) }, { ModelShapes::SQUARE, squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D) }, { ModelShapes::CIRCLE,circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D) },*/ { ModelShapes::PIRAMID,piramidFactory->Create3DModel(piramid,indicesPiramid,GLType::VERTEX3D) }};
+    return  std::map<ModelShapes, std::shared_ptr<IModel>>{{ModelShapes::TRIANGLE, triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D) }, { ModelShapes::SQUARE, squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D) }, { ModelShapes::CIRCLE,circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D) },{ ModelShapes::PIRAMID,piramidFactory->Create3DModel(piramid,indicesPiramid,GLType::VERTEX3D) }};
 
 }
 
@@ -505,14 +505,15 @@ static void myImplementation()
     glUseProgram(shaderProgram);*/
 
     // VAO
-    VertexArray<Vertex3D> m_vao;
+    /*VertexArray<Vertex3D> m_vao;
     VertexBuffer<Vertex3D> m_vbo(vertices);
+    ElementBuffer m_eb{indices};
     m_vao.Bind();
     m_vbo.Bind();
-    ElementBuffer m_eb{indices};
-
+    m_eb.Bind();
+    
     VertexBufferLayout m_layout;
-
+    
     m_layout.AddVertex3D(3);
     m_vao.AddBuffer(m_vbo, m_layout, GLType::VERTEX3D);
 
@@ -520,7 +521,7 @@ static void myImplementation()
 
     Shader shader("shaders/Basic.shader");
     shader.Bind();
-    shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
+    shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);*/
 
 
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
@@ -528,23 +529,23 @@ static void myImplementation()
         GLCall(glClearColor(0.2f, 0.3f, 0.3f, 1.0f));
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
      
-        //shaperender.Render();
+        shaperender.Render();
 
-        glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        glm::mat4 view = glm::mat4(1.0f);
-        glm::mat4 projection = glm::mat4(1.0f);
-        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-        projection = glm::perspective(glm::radians(45.0f), (float)WINDOWHEIGHT / (float)WINDOWWIDTH, 0.1f, 100.0f);
+        //glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        //glm::mat4 view = glm::mat4(1.0f);
+        //glm::mat4 projection = glm::mat4(1.0f);
+        //model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
+        //view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        //projection = glm::perspective(glm::radians(45.0f), (float)WINDOWHEIGHT / (float)WINDOWWIDTH, 0.1f, 100.0f);
 
-        glm::mat4 transformation_matrix = projection * view * model;
+        //glm::mat4 transformation_matrix = projection * view * model;
 
-        glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "transformation"), 1, GL_FALSE, &transformation_matrix[0][0]);
+        //glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "transformation"), 1, GL_FALSE, &transformation_matrix[0][0]);
 
 
-        //glBindVertexArray(VAO);
-        m_vao.Bind();
-        glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
+        ////glBindVertexArray(VAO);
+        //m_vao.Bind();
+        //glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
 
 
      
@@ -576,9 +577,9 @@ static void myImplementation()
         //glfwSwapBuffers(window);
         //glfwPollEvents();
     }
-    /*ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();*/
+    ImGui::DestroyContext();
     // Cleans up all the resources before it closes window
     GLCall(glfwTerminate());
 }

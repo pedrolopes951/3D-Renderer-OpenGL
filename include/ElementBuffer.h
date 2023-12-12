@@ -9,6 +9,7 @@ class ElementBuffer
 private:
     unsigned int m_RendererID;
     unsigned int m_Count;
+    const std::vector<unsigned int>& m_indices;
 
 public:
     ElementBuffer(const std::vector<unsigned int>& indices);
