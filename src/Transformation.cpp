@@ -17,18 +17,8 @@ void Transformation::Translate(float x, float y, float z) {
 
 void  Transformation::Rotate(float angle, float x, float y, float z)
 {
-    if (x != 0.0f)
-    {
-        m_modelMatrixRotation =  glm::rotate(m_indentyMatrix, angle, glm::vec3(x, 0.0f, 0.0f));
-    }
-    else if (y != 0.0f)
-    {
-        m_modelMatrixRotation = glm::rotate(m_indentyMatrix, angle, glm::vec3(0.0f, y, 0.0f));
-    }
-    else if (z != 0.0f)
-    {
-        m_modelMatrixRotation = glm::rotate(m_indentyMatrix, angle, glm::vec3(0.0f, 0.0f, z));
-    }
+    m_modelMatrixRotation = glm::rotate(m_indentyMatrix, angle, glm::vec3(x, y, z));
+
 
 }
 

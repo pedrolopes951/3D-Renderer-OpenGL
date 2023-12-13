@@ -69,8 +69,21 @@ void ShapeRenderer::Render3D()
     
    if (m_selected_shape == ModelShapes::PIRAMID)
     {
+       float rotationAngleY = 0.0f;  // Initialize the rotation angle
+       float rotationAngleX = 0.0f;  // Initialize the rotation angle
+       float rotationAngleZ = 0.0f;  // Initialize the rotation angle
 
-        m_transformation_matrices[ModelShapes::PIRAMID].Rotate((float)glfwGetTime(), 0.0f, 1.0f, 0.0f);
+
+        // ImGui slider for rotation angle
+        ImGui::SliderFloat("Rotation Angle Y", &rotationAngleY, 0.0f, 360.0f);
+        ImGui::SliderFloat("Rotation Angle X", &rotationAngleX, 0.0f, 360.0f);
+        ImGui::SliderFloat("Rotation Angle Z", &rotationAngleZ, 0.0f, 360.0f);
+
+
+        m_transformation_matrices[ModelShapes::PIRAMID].Rotate(glm::radians(rotationAngleY), 0.0f, 1.0f, 0.0f);
+        m_transformation_matrices[ModelShapes::PIRAMID].Rotate(glm::radians(rotationAngleX), 1.0f, 0.0f, 0.0f);
+        m_transformation_matrices[ModelShapes::PIRAMID].Rotate(glm::radians(rotationAngleZ), 0.0f, 0.0f, 1.0f);
+
 
         m_transformation_matrices[ModelShapes::PIRAMID].View(0.0f, 0.0f, -3.0f);
 
@@ -91,7 +104,7 @@ void ShapeRenderer::Render2D()
     {
 
         // Add which axis to rotate from
-        ImGui::SliderFloat3("Rotation Angle", &m_rotationAngle.x, 0.f, 360.f);
+        ImGui::SliderFloat("Rotation Angle z-axis", &m_rotationAngle.z, 0.f, 360.f);
 
         // Which axis to translate the offset
         ImGui::SliderFloat2("Translation Offset", &m_translation.x, 0.0f, 960.0f);
@@ -103,9 +116,7 @@ void ShapeRenderer::Render2D()
         //// Apply alll input to transformation matrices
         for (auto& trans : m_transformation_matrices)
         {
-            trans.second.Rotate(m_rotationAngle.x, 1.0, 0.0, 0.0);
-            trans.second.Rotate(m_rotationAngle.y, 0.0, 1.0, 0.0);
-            trans.second.Rotate(m_rotationAngle.z, 0.0, 0.0, 1.0);
+            trans.second.Rotate(glm::radians(m_rotationAngle.z), 0.0, 0.0, 1.0);
 
             trans.second.Translate(m_translation.x, m_translation.y, m_translation.z);
 
