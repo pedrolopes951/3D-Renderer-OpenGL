@@ -37,4 +37,11 @@ enum ModelShapes
     ALL
 };
 
+enum AxisRotation
+{
+    X,
+    Y,
+    Z
+};
+
 

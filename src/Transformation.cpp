@@ -15,10 +15,25 @@ void Transformation::Translate(float x, float y, float z) {
     m_modelMatrixTranslation = glm::translate(m_indentyMatrix, glm::vec3(x, y, z)) ;
 }
 
-void  Transformation::Rotate(float angle, float x, float y, float z)
+void  Transformation::Rotate(float angle, float x, float y, float z, AxisRotation axis)
 {
-    m_modelMatrixRotation = glm::rotate(m_indentyMatrix, angle, glm::vec3(x, y, z));
-
+    glm::mat4 result(1.f);
+    if (axis == AxisRotation::X)
+    {
+        m_modelMatrixRotation = glm::rotate(m_indentyMatrix, angle, glm::vec3(x, y, z));
+        result *= m_modelMatrixRotation;
+    }
+    else if (axis == AxisRotation::Y)
+    {
+        m_modelMatrixRotation = glm::rotate(m_indentyMatrix, angle, glm::vec3(x, y, z));
+        result *= m_modelMatrixRotation;
+    }
+    else if (axis == AxisRotation::Z)
+    {
+        m_modelMatrixRotation = glm::rotate(m_indentyMatrix, angle, glm::vec3(x, y, z));
+        result *= m_modelMatrixRotation;
+    }
+    m_modelMatrixRotation *= result;
 
 }
 
