@@ -61,31 +61,27 @@ void ShapeRenderer::Render()
 
 void ShapeRenderer::Render3D()
 {
-    const char* shapes3D[] = {"Piramid","Cube","Shepere"};
+    const char* shapes3D[] = { "Piramid","Cube","Shepere" };
     ImGui::Text("Select a shape to render:");
     ImGui::Combo("Selected Shape", &(m_selected_shape), shapes3D, IM_ARRAYSIZE(shapes3D));
 
-    m_selected_shape += ModelShapes::ALL/2;
-    
-   if (m_selected_shape == ModelShapes::PIRAMID)
-    {
+    m_selected_shape += ModelShapes::ALL / 2;
 
+    if (m_selected_shape == ModelShapes::PIRAMID)
+    {
         // ImGui slider for rotation angle
         ImGui::SliderFloat("Rotation Angle Y", &m_rotationAngle.x, 0.0f, 360.0f);
         ImGui::SliderFloat("Rotation Angle X", &m_rotationAngle.y, 0.0f, 360.0f);
         ImGui::SliderFloat("Rotation Angle Z", &m_rotationAngle.z, 0.0f, 360.0f);
 
-
         m_transformation_matrices[ModelShapes::PIRAMID].Rotate(glm::radians(m_rotationAngle.x), 1.0f, 0.0f, 0.0f, AxisRotation::X);
         m_transformation_matrices[ModelShapes::PIRAMID].Rotate(glm::radians(m_rotationAngle.y), 0.0f, 1.0f, 0.0f, AxisRotation::Y);
         m_transformation_matrices[ModelShapes::PIRAMID].Rotate(glm::radians(m_rotationAngle.z), 0.0f, 0.0f, 1.0f, AxisRotation::Z);
 
-
-
+        // Only set the view matrix once
         m_transformation_matrices[ModelShapes::PIRAMID].View(0.0f, 0.0f, -3.0f);
-
     }
-    
+  
 
 }
 

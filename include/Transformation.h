@@ -8,6 +8,8 @@
 
 #include <glm/gtx/string_cast.hpp>
 #include "Constants.h"
+#include <unordered_map>
+
 
 class Transformation
 {
@@ -31,18 +33,21 @@ public:
 
 
 
-    const glm::mat4& GetModelMatrix2D()const; 
-    const glm::mat4& GetModelMatrix3D()const;
+    const glm::mat4& GetModelMatrix2D() const; 
+    const glm::mat4& GetModelMatrix3D() const;
 
 
 private:
     glm::mat4 m_modelMatrixTranslation;
     glm::mat4 m_modelMatrixScaling;
     glm::mat4 m_modelMatrixRotation;
+    mutable glm::mat4 m_result{1.0f};
     glm::mat4 m_indentyMatrix;
     glm::mat4 m_projectionOrtho;
     glm::mat4 m_view;
     glm::mat4 m_projectionPerspective;
+    static std::unordered_map<AxisRotation, float> m_lastAngles;
+
 
 
 };
