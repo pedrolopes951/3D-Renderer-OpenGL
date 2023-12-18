@@ -31,13 +31,17 @@ public:
 
     void View(float x, float y, float z);
 
+    void setColor(const glm::vec4& color) { m_color = color; };
+    void SetCameraViewMatrix(const glm::mat4& view_matrix) { m_view = view_matrix; };
 
+    const glm::vec4& getColor() const { return m_color; };
 
     const glm::mat4& GetModelMatrix2D() const; 
     const glm::mat4& GetModelMatrix3D() const;
 
 
 private:
+    glm::vec4 m_color;
     glm::mat4 m_modelMatrixTranslation;
     glm::mat4 m_modelMatrixScaling;
     glm::mat4 m_modelMatrixRotation;

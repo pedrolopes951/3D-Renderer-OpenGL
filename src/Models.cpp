@@ -51,8 +51,6 @@ Triangle::Triangle(const std::vector<Vertex2D>& vertex, const std::vector<unsign
         break;
     }
     m_shader.Bind();
-    m_shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
-
 
 }
 
@@ -73,6 +71,8 @@ void Triangle::ApplyTransformation(const Transformation& transformation)
     // Pass the model matrix to the shader
     unsigned int transformLoc = GLCall(glGetUniformLocation(m_shader.getID(), "transformation"));
     GLCall(glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transformation.GetModelMatrix2D())));
+    m_shader.SetUniform4f("u_Color", transformation.getColor().r, transformation.getColor().g, transformation.getColor().b, transformation.getColor().a);
+
 }
 
 Square::Square(const std::vector<Vertex2D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices) : m_va{}, m_vb{ vertex }, m_eb{ eb }, m_layout{}, m_shader{ "shaders/Basic.shader" }
@@ -120,7 +120,6 @@ Square::Square(const std::vector<Vertex2D>& vertex, const std::vector<unsigned i
         break;
     }
     m_shader.Bind();
-    m_shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 
 
 }
@@ -144,6 +143,8 @@ void Square::ApplyTransformation(const Transformation& transformation)
     // Pass the model matrix to the shader
     unsigned int transformLoc = GLCall(glGetUniformLocation(m_shader.getID(), "transformation"));
     GLCall(glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transformation.GetModelMatrix2D())));
+    m_shader.SetUniform4f("u_Color", transformation.getColor().r, transformation.getColor().g, transformation.getColor().b, transformation.getColor().a);
+
 }
 
 Circle::Circle(const std::vector<Vertex2D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices) : m_va{}, m_vb{ vertex }, m_eb{ eb }, m_layout{}, m_shader{ "shaders/Basic.shader" }
@@ -191,7 +192,6 @@ Circle::Circle(const std::vector<Vertex2D>& vertex, const std::vector<unsigned i
         break;
     }
     m_shader.Bind();
-    m_shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 
 }
 
@@ -212,6 +212,8 @@ void Circle::ApplyTransformation(const Transformation& transformation)
     // Pass the model matrix to the shader
     unsigned int transformLoc = GLCall(glGetUniformLocation(m_shader.getID(), "transformation"));
     GLCall(glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transformation.GetModelMatrix2D())));
+    m_shader.SetUniform4f("u_Color", transformation.getColor().r, transformation.getColor().g, transformation.getColor().b, transformation.getColor().a);
+
 }
 
 
@@ -260,7 +262,6 @@ Piramid::Piramid(const std::vector<Vertex3D>& vertex, const std::vector<unsigned
         break;
     }
     m_shader.Bind();
-    m_shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
     
 }
 
@@ -272,7 +273,6 @@ Piramid::~Piramid()
 
 void Piramid::Render()
 {
-
     m_va.Bind();
     GLCall(glDrawElements(GL_TRIANGLES, m_eb.GetCount(), GL_UNSIGNED_INT, 0));
 }
@@ -301,4 +301,6 @@ void Piramid::ApplyTransformation(const Transformation& transformation)
     //// Pass the model matrix to the shader
     unsigned int transformLoc = GLCall(glGetUniformLocation(m_shader.getID(), "transformation"));
     GLCall(glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transformation.GetModelMatrix3D())));
+    m_shader.SetUniform4f("u_Color", transformation.getColor().r, transformation.getColor().g, transformation.getColor().b, transformation.getColor().a);
+
 }

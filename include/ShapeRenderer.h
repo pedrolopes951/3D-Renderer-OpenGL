@@ -44,6 +44,7 @@ private:
     glm::vec3 m_rotationAngle = { 0.f ,0.f,0.f};
     glm::vec3 m_translation{0.f,0.f,0.f};
     glm::vec3 m_scaling{ 1.f,1.f,0.f };
+    glm::vec4 m_color{ 1.0f };
 
     
     GLFWwindow* m_window;

@@ -1,7 +1,7 @@
 #include "Transformation.h"
 #include <unordered_map>
 
-Transformation::Transformation() : m_modelMatrixTranslation{ glm::mat4(1.0f) }, m_modelMatrixScaling{ glm::mat4(1.0f) }, m_modelMatrixRotation{ glm::mat4(1.0f) }, m_view{glm::mat4(1.f)}, m_projectionOrtho{glm::ortho(0.0f, WINDOWWIDTH, 0.0f, WINDOWHEIGHT)}, m_projectionPerspective{ glm::perspective(glm::radians(FOV), (float)WINDOWHEIGHT / (float)WINDOWWIDTH, 0.1f, 100.0f) }, m_indentyMatrix{glm::mat4(1.0f)}
+Transformation::Transformation() : m_modelMatrixTranslation{ glm::mat4(1.0f) }, m_modelMatrixScaling{ glm::mat4(1.0f) }, m_modelMatrixRotation{ glm::mat4(1.0f) }, m_view{glm::mat4(1.f)}, m_projectionOrtho{glm::ortho(0.0f, WINDOWWIDTH, 0.0f, WINDOWHEIGHT)}, m_projectionPerspective{ glm::perspective(glm::radians(FOV), (float)WINDOWHEIGHT / (float)WINDOWWIDTH, 0.1f, 100.0f) }, m_indentyMatrix{glm::mat4(1.0f)}, m_color{ 1.0f, 1.0f, 1.0f, 1.0f } 
 {
 }
 

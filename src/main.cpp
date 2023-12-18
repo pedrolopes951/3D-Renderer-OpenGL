@@ -445,84 +445,6 @@ static void myImplementation()
 
    ShapeRenderer shaperender(window, models);
 
-    std::vector<Vertex3D> vertices = {
-        // Base
-       { -0.5f, -0.5f, -0.5f },
-       {  0.5f, -0.5f, -0.5f },
-       {  0.5f, -0.5f,  0.5f },
-       { -0.5f, -0.5f,  0.5f },
-
-       // Front face
-       {  0.0f,  0.5f,  0.0f },
-       { -0.5f, -0.5f,  0.5f },
-       {  0.5f, -0.5f,  0.5f },
-
-       // Right face
-       {  0.0f,  0.5f,  0.0f },
-       {  0.5f, -0.5f,  0.5f },
-       {  0.5f, -0.5f, -0.5f },
-
-       // Back face
-       {  0.0f,  0.5f,  0.0f },
-       {  0.5f, -0.5f, -0.5f },
-       { -0.5f, -0.5f, -0.5f },
-
-       // Left face
-       {  0.0f,  0.5f,  0.0f },
-       { -0.5f, -0.5f, -0.5f },
-       { -0.5f, -0.5f,  0.5f }
-    };
-
-    std::vector<unsigned int> indices = {
-       0, 1, 2,
-       0, 2, 3,
-       4, 5, 6,
-       7, 8, 9,
-       10, 11, 12,
-       13, 14, 15
-    };
-
-    // Set up vertex array and buffer
-    unsigned int VBO, VAO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex3D), vertices.data(), GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // Shader program
-   /* GLuint shaderProgram = createShaderProgram();
-    glUseProgram(shaderProgram);*/
-
-    // VAO
-    /*VertexArray<Vertex3D> m_vao;
-    VertexBuffer<Vertex3D> m_vbo(vertices);
-    ElementBuffer m_eb{indices};
-    m_vao.Bind();
-    m_vbo.Bind();
-    m_eb.Bind();
-    
-    VertexBufferLayout m_layout;
-    
-    m_layout.AddVertex3D(3);
-    m_vao.AddBuffer(m_vbo, m_layout, GLType::VERTEX3D);
-
-
-
-    Shader shader("shaders/Basic.shader");
-    shader.Bind();
-    shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);*/
-
 
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
     {
@@ -531,52 +453,11 @@ static void myImplementation()
      
         shaperender.Render();
 
-        //glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        //glm::mat4 view = glm::mat4(1.0f);
-        //glm::mat4 projection = glm::mat4(1.0f);
-        //model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
-        //view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-        //projection = glm::perspective(glm::radians(45.0f), (float)WINDOWHEIGHT / (float)WINDOWWIDTH, 0.1f, 100.0f);
-
-        //glm::mat4 transformation_matrix = projection * view * model;
-
-        //glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "transformation"), 1, GL_FALSE, &transformation_matrix[0][0]);
-
-
-        ////glBindVertexArray(VAO);
-        //m_vao.Bind();
-        //glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
-
-
-     
+       
         GLCall(glfwSwapBuffers(window)); // wap the color buffer (a large 2D buffer that contains color values for each pixel in GLFW's window) that is used to render to during this render iteration and show it as output to the screen.
         GLCall(glfwPollEvents());
-
-        //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // also clear the depth buffer now!
-
-        //// create transformations
-        //glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        //glm::mat4 view = glm::mat4(1.0f);
-        //glm::mat4 projection = glm::mat4(1.0f);
-        //model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
-        //view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-        //projection = glm::perspective(glm::radians(45.0f), (float)WINDOWHEIGHT / (float)WINDOWWIDTH, 0.1f, 100.0f);
-
-        //glm::mat4 transformation = projection * view * model;
-
-        //glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "transformation"), 1, GL_FALSE, &transformation[0][0]);
-
-
-        //// render pyramid
-        //glBindVertexArray(VAO);
-        //glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
-
-        //// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        //// -------------------------------------------------------------------------------
-        //glfwSwapBuffers(window);
-        //glfwPollEvents();
     }
+
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
@@ -587,7 +468,6 @@ static void myImplementation()
 int main(void)
 {
     myImplementation();
-
 
   // TesttheFuckingPiramid();
 
