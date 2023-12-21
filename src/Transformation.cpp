@@ -72,6 +72,7 @@ const glm::mat4& Transformation::GetModelMatrix3D() const {
    //view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
    //projection = glm::perspective(glm::radians(45.0f), (float)WINDOWHEIGHT / (float)WINDOWWIDTH, 0.1f, 100.0f);
    //return projection * view * model;
+   //m_projectionPerspective = glm::perspective(glm::radians(45.0f), (float)WINDOWHEIGHT / (float)WINDOWWIDTH, 0.1f, 100.0f);
     m_result = m_projectionPerspective * m_view * m_modelMatrixRotation;
    return m_result;
 }

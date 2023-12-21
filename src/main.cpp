@@ -7,8 +7,14 @@
 #include "FactoryModels.h"
 #include "Models.h"
 #include "ShapeRenderer.h"
+#include "Camera.h"
 
 #include "Constants.h"
+
+
+
+std::shared_ptr<Camera> g_camera;
+
 
 // Vertex Shader source
 static const char* vertexShaderSourceTest = R"(
@@ -32,6 +38,13 @@ static const char* fragmentShaderSourceTest = R"(
         FragColor = vec4(1.0, 1.0, 1.0, 1.0);
     }
 )";
+
+// camera
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+void processInput(GLFWwindow* window);
 
 
 // Vertex shaders process vertex data, while fragment shaders determine the final color of each pixel.
@@ -148,6 +161,8 @@ static GLFWwindow* InitWindow()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
 
     
     // Initialize GLEW
@@ -179,6 +194,8 @@ static  std::map<ModelShapes, std::shared_ptr<IModel>> InitModels()
     std::shared_ptr<IModelFactory> squareFactory = std::make_shared<SquareFactory>();
     std::shared_ptr<IModelFactory> circleFactory = std::make_shared<CircleFactory>();
     std::shared_ptr<IModelFactory> piramidFactory = std::make_shared<PiramidFactory>();
+    std::shared_ptr<IModelFactory> cubeFactory = std::make_shared<CubeFactory>();
+    std::shared_ptr<IModelFactory> shepereFactory = std::make_shared<SphereFactory>();
 
 
 
@@ -249,7 +266,58 @@ static  std::map<ModelShapes, std::shared_ptr<IModel>> InitModels()
        { -0.5f, -0.5f,  0.5f }
     };
 
- 
+    std::vector<Vertex3D> cubeVertices = {
+        // Front face
+        { -0.5f, -0.5f,  0.5f },
+        {  0.5f, -0.5f,  0.5f },
+        {  0.5f,  0.5f,  0.5f },
+        { -0.5f,  0.5f,  0.5f },
+
+        // Back face
+        { -0.5f, -0.5f, -0.5f },
+        {  0.5f, -0.5f, -0.5f },
+        {  0.5f,  0.5f, -0.5f },
+        { -0.5f,  0.5f, -0.5f },
+    };
+    std::vector<Vertex3D> sphereVertices;
+
+    int numLatitudeDivisions = 20; // Adjust as needed
+    int numLongitudeDivisions = 20; // Adjust as needed
+    float radius_sphere = 1.0f; // Adjust as needed
+
+    // Generate sphere vertices
+    for (int lat = 0; lat <= numLatitudeDivisions; ++lat) {
+        for (int lon = 0; lon <= numLongitudeDivisions; ++lon) {
+            float theta = static_cast<float>(lat) / numLatitudeDivisions * glm::pi<float>();
+            float phi = static_cast<float>(lon) / numLongitudeDivisions * 2.0f * glm::pi<float>();
+
+            float x = radius_sphere * std::sin(theta) * std::cos(phi);
+            float y = radius_sphere * std::cos(theta);
+            float z = radius_sphere * std::sin(theta) * std::sin(phi);
+
+            sphereVertices.push_back(Vertex3D(x, y, z));
+        }
+    }
+
+     std::vector<unsigned int> sphereIndices;
+
+     // Generate sphere indices
+    for (int lat = 0; lat < numLatitudeDivisions; ++lat) {
+        for (int lon = 0; lon < numLongitudeDivisions; ++lon) {
+            int current = lat * (numLongitudeDivisions + 1) + lon;
+            int next = current + numLongitudeDivisions + 1;
+
+            // Define the two triangles that make up each square on the sphere
+            sphereIndices.push_back(current);
+            sphereIndices.push_back(next);
+            sphereIndices.push_back(current + 1);
+
+            sphereIndices.push_back(next);
+            sphereIndices.push_back(next + 1);
+            sphereIndices.push_back(current + 1);
+        }
+    }
+
 
 
     // indices
@@ -274,11 +342,39 @@ static  std::map<ModelShapes, std::shared_ptr<IModel>> InitModels()
        13, 14, 15
     };
 
+    std::vector<unsigned int> cubeIndices = {
+        // Front face
+        0, 1, 2,
+        2, 3, 0,
+
+        // Right face
+        1, 5, 6,
+        6, 2, 1,
+
+        // Back face
+        7, 6, 5,
+        5, 4, 7,
+
+        // Left face
+        4, 0, 3,
+        3, 7, 4,
+
+        // Top face
+        3, 2, 6,
+        6, 7, 3,
+
+        // Bottom face
+        4, 5, 1,
+        1, 0, 4,
+    };
 
 
 
 
-    return  std::map<ModelShapes, std::shared_ptr<IModel>>{{ModelShapes::TRIANGLE, triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D) }, { ModelShapes::SQUARE, squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D) }, { ModelShapes::CIRCLE,circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D) },{ ModelShapes::PIRAMID,piramidFactory->Create3DModel(piramid,indicesPiramid,GLType::VERTEX3D) }};
+    return  std::map<ModelShapes, std::shared_ptr<IModel>>{{ModelShapes::TRIANGLE, triangleFactory->Create2DModel(triangle, indicesT, GLType::VERTEX2D) }, { ModelShapes::SQUARE, squareFactory->Create2DModel(square, indicesS, GLType::VERTEX2D) },
+        { ModelShapes::CIRCLE,circleFactory->Create2DModel(circle, indicesC, GLType::VERTEX2D) }, { ModelShapes::PIRAMID,piramidFactory->Create3DModel(piramid,indicesPiramid,GLType::VERTEX3D) },
+        { ModelShapes::CUBE,cubeFactory->Create3DModel(cubeVertices,cubeIndices,GLType::VERTEX3D) },
+        { ModelShapes::SHEPERE,shepereFactory->Create3DModel(sphereVertices,sphereIndices,GLType::VERTEX3D) }};
 
 }
 
@@ -373,6 +469,7 @@ static void TesttheFuckingPiramid()
         13, 14, 15
     };
 
+  
     GLFWwindow* window = InitWindow();
     
 
@@ -400,6 +497,10 @@ static void TesttheFuckingPiramid()
 
     // Render loop
     while (!glfwWindowShouldClose(window)) {
+
+
+      
+
         // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // also clear the depth buffer now!
@@ -435,19 +536,33 @@ static void TesttheFuckingPiramid()
     glfwTerminate();
 }
 
+
+
 static void myImplementation()
 {
+    g_camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
+
     GLFWwindow* window = InitWindow();
     if (!window)
         return;
 
    auto models = InitModels();
 
-   ShapeRenderer shaperender(window, models);
+   ShapeRenderer shaperender(window, models, g_camera);
 
 
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
     {
+        // per-frame time logic
+       // --------------------
+        float currentFrame = static_cast<float>(glfwGetTime());
+        g_camera->deltaTime= currentFrame - g_camera->lastFrame;
+        g_camera->lastFrame = currentFrame;
+
+        // Process the inputs
+      // input
+      // -----
+        processInput(window);
         GLCall(glClearColor(0.2f, 0.3f, 0.3f, 1.0f));
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
      
@@ -472,4 +587,52 @@ int main(void)
   // TesttheFuckingPiramid();
 
     return 0;
+}
+
+// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
+// ---------------------------------------------------------------------------------------------------------
+void processInput(GLFWwindow* window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        g_camera->ProcessKeyboard(FORWARD, g_camera->deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        g_camera->ProcessKeyboard(BACKWARD, g_camera->deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        g_camera->ProcessKeyboard(LEFT, g_camera->deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        g_camera->ProcessKeyboard(RIGHT, g_camera->deltaTime);
+}
+
+
+// glfw: whenever the mouse moves, this callback is called
+// -------------------------------------------------------
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
+{
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
+
+    if (g_camera->firstMouse)
+    {
+        g_camera->lastX = xpos;
+        g_camera->lastY = ypos;
+        g_camera->firstMouse = false;
+    }
+
+    float xoffset = xpos - g_camera->lastX;
+    float yoffset = g_camera->lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+    g_camera->lastX = xpos;
+    g_camera->lastY = ypos;
+
+    g_camera->ProcessMouseMovement(xoffset, yoffset);
+}
+
+// glfw: whenever the mouse scroll wheel scrolls, this callback is called
+// ----------------------------------------------------------------------
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    g_camera->ProcessMouseScroll(static_cast<float>(yoffset));
 }

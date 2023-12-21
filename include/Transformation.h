@@ -49,7 +49,7 @@ private:
     glm::mat4 m_indentyMatrix;
     glm::mat4 m_projectionOrtho;
     glm::mat4 m_view;
-    glm::mat4 m_projectionPerspective;
+    mutable glm::mat4 m_projectionPerspective;
     static std::unordered_map<AxisRotation, float> m_lastAngles;
 
 

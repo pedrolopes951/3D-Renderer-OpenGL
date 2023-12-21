@@ -87,4 +87,41 @@ private:
 
 };
 
+class Cube : public IModel
+{
+public:
+    Cube(const std::vector<Vertex3D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices);
+    ~Cube();
+    void Render() override;
+    void ApplyTransformation(const Transformation& transformation)override;
+
+private:
+    VertexArray<Vertex3D> m_va;
+    VertexBuffer<Vertex3D> m_vb;
+    VertexBufferLayout m_layout;
+    ElementBuffer m_eb;
+    Shader m_shader;
+    Transformation m_transformation;
+
+
+};
+
+class Sphere : public IModel
+{
+public:
+    Sphere(const std::vector<Vertex3D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices);
+    ~Sphere();
+    void Render() override;
+    void ApplyTransformation(const Transformation& transformation)override;
+
+private:
+    VertexArray<Vertex3D> m_va;
+    VertexBuffer<Vertex3D> m_vb;
+    VertexBufferLayout m_layout;
+    ElementBuffer m_eb;
+    Shader m_shader;
+    Transformation m_transformation;
+
+
+};
 

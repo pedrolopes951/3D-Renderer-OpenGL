@@ -5,7 +5,7 @@
 
 
 
-ShapeRenderer::ShapeRenderer(GLFWwindow* window, std::map<ModelShapes, std::shared_ptr<IModel>>& models) : m_window{window}, m_models_available{models}
+ShapeRenderer::ShapeRenderer(GLFWwindow* window, std::map<ModelShapes, std::shared_ptr<IModel>>& models, std::shared_ptr<Camera> camera) : m_window{window}, m_models_available{models}, m_camera{camera}
 {
     this->InitTransformationMatrices();
     const char* glsl_version = "#version 130";
@@ -25,6 +25,7 @@ void ShapeRenderer::Render()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+
 
     this->RenderImGuiWindow();
 
@@ -48,6 +49,16 @@ void ShapeRenderer::Render()
         m_models_available[ModelShapes::PIRAMID]->Render();
         m_selected_shape -= ModelShapes::ALL / 2;
         break;
+    case ModelShapes::CUBE:
+        m_models_available[ModelShapes::CUBE]->ApplyTransformation(m_transformation_matrices[ModelShapes::CUBE]);
+        m_models_available[ModelShapes::CUBE]->Render();
+        m_selected_shape -= ModelShapes::ALL / 2;
+        break;
+    case ModelShapes::SHEPERE:
+        m_models_available[ModelShapes::SHEPERE]->ApplyTransformation(m_transformation_matrices[ModelShapes::SHEPERE]);
+        m_models_available[ModelShapes::SHEPERE]->Render();
+        m_selected_shape -= ModelShapes::ALL / 2;
+        break;
     default:
         std::cerr << "Not available model for rendering" << std::endl;
         throw("Not available model for rendering");
@@ -59,6 +70,9 @@ void ShapeRenderer::Render()
 }
 
 
+
+
+
 void ShapeRenderer::Render3D()
 {
     const char* shapes3D[] = { "Piramid","Cube","Shepere" };
@@ -67,29 +81,13 @@ void ShapeRenderer::Render3D()
 
     m_selected_shape += ModelShapes::ALL / 2;
 
-    // Camera moving 
-    const float radius = 10.0f;
-    float camX = sin(glfwGetTime()) * radius;
-    float camZ = cos(glfwGetTime()) * radius;
+ 
 
-    glm::mat4 view;
+    glm::mat4 view = m_camera->GetViewMatrix();
 
-    view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0)); // First vector is the position of the camera, second is the target to the camero to point at, and the last one is the up vactor
+  
 
-    /*
-    * Camera Position
-    * glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);  Camera position z-axis is positve pointing
-    * Camera Direction
-    * glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);  e.g. at what direction it is pointing at. For now we let the camera point to the origin of our scene: (0,0,0). 
-    * glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget); Subtracting the camera position vector from the scene's origin vector thus results in the direction vector we want. 
-    * Right Axis
-    * glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-    * glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection)); we do a cross product on the up vector and the direction vector from step 2
-    * Up Axis
-    * glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight); etrieving the vector that points to the camera's positive y-axis is relatively easy: we take the cross product of the right and direction vector
-    */
-
-    if (m_selected_shape == ModelShapes::PIRAMID)
+    if (m_selected_shape == ModelShapes::PIRAMID || m_selected_shape == ModelShapes::CUBE || m_selected_shape == ModelShapes::SHEPERE)
     {
         // ImGui slider for rotation angle
         /*ImGui::SliderFloat("Rotation Angle Y", &m_rotationAngle.x, 0.0f, 360.0f);
@@ -105,9 +103,21 @@ void ShapeRenderer::Render3D()
 
         // Only set the view matrix once
         //m_transformation_matrices[ModelShapes::PIRAMID].View(0.0f, 0.0f, -3.0f);
-        m_transformation_matrices[ModelShapes::PIRAMID].SetCameraViewMatrix(view);
 
+
+        m_transformation_matrices[ModelShapes::PIRAMID].Perspective(glm::radians(m_camera->Zoom), (float)WINDOWWIDTH / (float)WINDOWHEIGHT, 0.1f, 100.0f);
+        m_transformation_matrices[ModelShapes::PIRAMID].SetCameraViewMatrix(view);
         m_transformation_matrices[ModelShapes::PIRAMID].setColor(m_color);
+
+        m_transformation_matrices[ModelShapes::CUBE].Perspective(glm::radians(m_camera->Zoom), (float)WINDOWWIDTH / (float)WINDOWHEIGHT, 0.1f, 100.0f);
+        m_transformation_matrices[ModelShapes::CUBE].SetCameraViewMatrix(view);
+        m_transformation_matrices[ModelShapes::CUBE].setColor(m_color);
+
+        m_transformation_matrices[ModelShapes::SHEPERE].Perspective(glm::radians(m_camera->Zoom), (float)WINDOWWIDTH / (float)WINDOWHEIGHT, 0.1f, 100.0f);
+        m_transformation_matrices[ModelShapes::SHEPERE].SetCameraViewMatrix(view);
+        m_transformation_matrices[ModelShapes::SHEPERE].setColor(m_color);
+
+
 
     }
   
@@ -182,5 +192,9 @@ void ShapeRenderer::InitTransformationMatrices()
     m_transformation_matrices[ModelShapes::SQUARE] = Transformation();
     m_transformation_matrices[ModelShapes::CIRCLE] = Transformation();
     m_transformation_matrices[ModelShapes::PIRAMID] = Transformation();
+    m_transformation_matrices[ModelShapes::CUBE] = Transformation();
+    m_transformation_matrices[ModelShapes::SHEPERE] = Transformation();
+
+
        
 }

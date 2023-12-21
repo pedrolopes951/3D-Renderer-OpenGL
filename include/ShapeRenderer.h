@@ -12,6 +12,8 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "Constants.h"
+#include "Camera.h"
+
 
 
 
@@ -19,7 +21,7 @@
 class ShapeRenderer
 {
 public:
-    ShapeRenderer(GLFWwindow* window, std::map<ModelShapes, std::shared_ptr<IModel>>& models);
+    ShapeRenderer(GLFWwindow* window, std::map<ModelShapes, std::shared_ptr<IModel>>& models, std::shared_ptr<Camera> camera);
     ~ShapeRenderer();
     void Render();
 
@@ -48,7 +50,9 @@ private:
 
     
     GLFWwindow* m_window;
+    std::shared_ptr<Camera> m_camera;
     std::map<ModelShapes, std::shared_ptr<IModel>>& m_models_available;
     std::map<ModelShapes,Transformation> m_transformation_matrices;
 
 };
+

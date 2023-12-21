@@ -51,3 +51,27 @@ public:
 private:
 
 };
+class CubeFactory : public IModelFactory
+{
+public:
+    CubeFactory() {
+        std::cout << "Cube Created" << std::endl;
+    };
+    ~CubeFactory() {};
+    std::unique_ptr<IModel> Create3DModel(const std::vector<Vertex3D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)  override;
+
+private:
+
+};
+class SphereFactory : public IModelFactory
+{
+public:
+    SphereFactory() {
+        std::cout << "Cube Created" << std::endl;
+    };
+    ~SphereFactory() {};
+    std::unique_ptr<IModel> Create3DModel(const std::vector<Vertex3D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)  override;
+
+private:
+
+};

@@ -21,3 +21,11 @@ std::unique_ptr<IModel> PiramidFactory::Create3DModel(const std::vector<Vertex3D
 {
     return std::make_unique<Piramid>(vertex,eb,typeVertices);
 }
+std::unique_ptr<IModel> CubeFactory::Create3DModel(const std::vector<Vertex3D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)
+{
+    return std::make_unique<Cube>(vertex, eb, typeVertices);
+}
+std::unique_ptr<IModel> SphereFactory::Create3DModel(const std::vector<Vertex3D>& vertex, const std::vector<unsigned int>& eb, const GLType typeVertices)
+{
+    return std::make_unique<Sphere>(vertex, eb, typeVertices);
+}
