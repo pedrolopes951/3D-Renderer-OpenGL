@@ -280,25 +280,6 @@ void Piramid::Render()
 void Piramid::ApplyTransformation(const Transformation& transformation)
 {
 
-
-    // create transformations
-    //glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-    //glm::mat4 view = glm::mat4(1.0f);
-    //glm::mat4 projection = glm::mat4(1.0f);
-    //model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
-    //view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-    //projection = glm::perspective(glm::radians(45.0f), (float)WINDOWHEIGHT / (float)WINDOWWIDTH, 0.1f, 100.0f);
-
-    //glm::mat4 transformation_matrix = projection * view * model;
-
-    //glUniformMatrix4fv(glGetUniformLocation(m_shader.getID(), "transformation"), 1, GL_FALSE, &transformation_matrix[0][0]);
-
-
-    //glBindVertexArray(VAO);
-    //m_va.Bind();
-    //glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
-
-    //// Pass the model matrix to the shader
     unsigned int transformLoc = GLCall(glGetUniformLocation(m_shader.getID(), "transformation"));
     GLCall(glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transformation.GetModelMatrix3D())));
     m_shader.SetUniform4f("u_Color", transformation.getColor().r, transformation.getColor().g, transformation.getColor().b, transformation.getColor().a);

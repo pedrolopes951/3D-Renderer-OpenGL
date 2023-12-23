@@ -22,10 +22,6 @@ private:
     ElementBuffer m_eb;
     Shader m_shader;
     Transformation m_transformation;
-
-
-    
-
 };
 
 class Square : public IModel
