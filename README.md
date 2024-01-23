@@ -45,6 +45,5 @@ This project is a versatile 3D and 2D renderer created using Visual Studio for W
 - OpenGL Course - Create 3D and 2D Graphics With C++ : https://youtu.be/45MIykWJ-C4?si=wpAYoPYWgNJbGMqc
 
 ## Contact
-For inquiries, please contact [pedro.miguel.lopes951@gmail.com](mailto:pedro.miguel.lopes951@gmail.com).
+Please contact [pedro.miguel.lopes951@gmail.com](mailto:pedro.miguel.lopes951@gmail.com).
 
-Enjoy rendering in both 2D and 3D with this versatile application!
